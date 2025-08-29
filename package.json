@@ -39,6 +39,7 @@
     "jsdom": "^23.0.0",
     "prettier": "^3.0.0",
     "sass-embedded": "^1.91.0",
+    "terser": "^5.43.1",
     "typescript": "^5.0.0",
     "vitest": "^1.0.0"
   },
