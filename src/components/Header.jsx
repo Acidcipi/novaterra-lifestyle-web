@@ -19,9 +19,9 @@ const Header = ({ onLoginClick, user, onLogout, isAuthenticated }) => {
   
   // Array directo de imágenes locales
   const headerImages = [
-    '/images/header/cabarceno.jpg',
     '/images/header/tina-menor.jpg',
     '/images/header/castro.jpg',
+    '/images/header/cabarceno.jpg',
     '/images/header/saltacaballo.jpg',
     '/images/header/la-magdalena.jpg'
   ];
