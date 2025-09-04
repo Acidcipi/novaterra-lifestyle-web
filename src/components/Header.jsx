@@ -1,5 +1,5 @@
 //===============================================
-//📸 HEADER SOLO NAVEGACIÓN - src/components/Header.jsx
+//📸 HEADER DEFINITIVO CORREGIDO - src/components/Header.jsx
 //===============================================
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -26,12 +26,9 @@ const Header = ({ onLoginClick }) => {
   ];
 
   //===============================================
-  //⚙️ EFECTO PARA ROTACIÓN AUTOMÁTICA DE IMÁGENES
+  //⚙️ EFECTO PARA ROTACIÓN AUTOMÁTICA - EN TODAS LAS PÁGINAS
   //===============================================
   useEffect(() => {
-    // Solo ejecutar carrusel en la página de inicio
-    if (location.pathname !== '/') return;
-    
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => 
         (prevIndex + 1) % headerImages.length
@@ -39,10 +36,10 @@ const Header = ({ onLoginClick }) => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [headerImages.length, location.pathname]);
+  }, [headerImages.length]);
 
   //===============================================
-  //🌍 MANEJADOR DE CAMBIO DE IDIOMA CON BANDERAS
+  //🌍 MANEJADOR DE CAMBIO DE IDIOMA CON TODAS LAS BANDERAS
   //===============================================
   const handleLanguageChange = useCallback((event) => {
     const newLanguage = event.target.value;
@@ -50,14 +47,21 @@ const Header = ({ onLoginClick }) => {
     localStorage.setItem('novaterra-language', newLanguage);
   }, [i18n]);
 
-  // Función corregida para obtener la bandera del país
+  // TODAS las banderas para TODOS los idiomas de tu config
   const getLanguageDisplay = (language) => {
     const languages = {
       'es': '🇪🇸 Español',
-      'en': '🇬🇧 English',
-      'fr': '🇫🇷 Français',
+      'en': '🇬🇧 English', 
+      'ru': '🇷🇺 Русский',
+      'ro': '🇷🇴 Română',
+      'pl': '🇵🇱 Polski',
+      'uk': '🇺🇦 Українська',
+      'mk': '🇲🇰 Македонски',
       'de': '🇩🇪 Deutsch',
-      'it': '🇮🇹 Italiano'
+      'fr': '🇫🇷 Français',
+      'it': '🇮🇹 Italiano',
+      'pt': '🇵🇹 Português',
+      'nl': '🇳🇱 Nederlands'
     };
     return languages[language] || `🌍 ${language.toUpperCase()}`;
   };
@@ -90,7 +94,51 @@ const Header = ({ onLoginClick }) => {
   //===============================================
   return (
     <header className="header-container">
-      {/* --------BARRA DE NAVEGACIÓN SIEMPRE VISIBLE-------- */}
+      {/* --------CARRUSEL DE IMÁGENES EN TODAS LAS PÁGINAS-------- */}
+      <div className="hero-image-container">
+        <img 
+          src={headerImages[currentImageIndex]}
+          alt={`Vista ${currentImageIndex + 1} de Cantabria`}
+          className="hero-image"
+          onError={(e) => {
+            e.target.src = 'https://via.placeholder.com/1200x600/1a1a1a/d4af37?text=Novaterra+Cantabria';
+          }}
+        />
+        
+        {/* Indicadores del carrusel */}
+        <div className="carousel-indicators">
+          {headerImages.map((_, index) => (
+            <button
+              key={index}
+              className={`carousel-indicator ${index === currentImageIndex ? 'active' : ''}`}
+              onClick={() => setCurrentImageIndex(index)}
+              aria-label={`Ir a imagen ${index + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* Navegación del carrusel */}
+        <button 
+          className="carousel-nav carousel-prev"
+          onClick={() => setCurrentImageIndex(
+            currentImageIndex === 0 ? headerImages.length - 1 : currentImageIndex - 1
+          )}
+          aria-label="Imagen anterior"
+        >
+          &#8249;
+        </button>
+        <button 
+          className="carousel-nav carousel-next"
+          onClick={() => setCurrentImageIndex(
+            (currentImageIndex + 1) % headerImages.length
+          )}
+          aria-label="Siguiente imagen"
+        >
+          &#8250;
+        </button>
+      </div>
+
+      {/* --------BARRA DE NAVEGACIÓN SOBRE LAS IMÁGENES-------- */}
       <nav className="navigation-bar">
         {/* Logo */}
         <div className="logo">
@@ -154,7 +202,7 @@ const Header = ({ onLoginClick }) => {
           </div>
         </div>
 
-        {/* Acciones del header - LOGIN PRIMERO */}
+        {/* Acciones del header - LOGIN PRIMERO, IDIOMA SEGUNDO */}
         <div className="header-actions">
           {/* Login PRIMERO (izquierda) */}
           <button 
@@ -165,7 +213,7 @@ const Header = ({ onLoginClick }) => {
             Iniciar Sesión
           </button>
           
-          {/* Idioma SEGUNDO (derecha) con banderas corregidas */}
+          {/* Idioma SEGUNDO (derecha) con TODAS las banderas */}
           <div className="language-selector">
             <select 
               value={i18n.language} 
@@ -181,69 +229,6 @@ const Header = ({ onLoginClick }) => {
           </div>
         </div>
       </nav>
-
-      {/* --------IMAGEN HERO CON CARRUSEL - SOLO EN HOME-------- */}
-      {location.pathname === '/' && (
-        <>
-          <div className="hero-image-container">
-            <img 
-              src={headerImages[currentImageIndex]}
-              alt={`Vista ${currentImageIndex + 1} de Cantabria`}
-              className="hero-image"
-              onError={(e) => {
-                e.target.src = 'https://via.placeholder.com/1200x600/1a1a1a/d4af37?text=Novaterra+Cantabria';
-              }}
-            />
-            
-            {/* Indicadores del carrusel */}
-            <div className="carousel-indicators">
-              {headerImages.map((_, index) => (
-                <button
-                  key={index}
-                  className={`carousel-indicator ${index === currentImageIndex ? 'active' : ''}`}
-                  onClick={() => setCurrentImageIndex(index)}
-                  aria-label={`Ir a imagen ${index + 1}`}
-                />
-              ))}
-            </div>
-
-            {/* Navegación del carrusel */}
-            <button 
-              className="carousel-nav carousel-prev"
-              onClick={() => setCurrentImageIndex(
-                currentImageIndex === 0 ? headerImages.length - 1 : currentImageIndex - 1
-              )}
-              aria-label="Imagen anterior"
-            >
-              &#8249;
-            </button>
-            <button 
-              className="carousel-nav carousel-next"
-              onClick={() => setCurrentImageIndex(
-                (currentImageIndex + 1) % headerImages.length
-              )}
-              aria-label="Siguiente imagen"
-            >
-              &#8250;
-            </button>
-          </div>
-
-          {/* --------CONTENIDO HERO SOLO EN HOME-------- */}
-          <section className="hero-content-section">
-            <div className="hero-text-content">
-              <h1 className="hero-main-title">
-                Descubre Cantabria
-              </h1>
-              <p className="hero-main-subtitle">
-                Propiedades exclusivas y experiencias premium
-              </p>
-              <button className="hero-cta-button">
-                Explorar Propiedades
-              </button>
-            </div>
-          </section>
-        </>
-      )}
     </header>
   );
 };
