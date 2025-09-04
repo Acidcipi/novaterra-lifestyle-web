@@ -1,20 +1,48 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './styles/variables.scss'
+//===============================================
+//🚀 CONFIGURACIÓN REACT ROUTER - src/main.jsx
+//===============================================
+import React, { Suspense } from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App.jsx';
+import './i18n/config.js';
+import './index.css';
 
-// Importar CSS global base
-import './styles/global.css'
+//===============================================
+//⏳ COMPONENTE DE CARGA GLOBAL
+//===============================================
+const Loading = () => (
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    background: '#1a1a1a',
+    color: '#d4af37',
+    fontSize: '1.2rem',
+    fontFamily: 'Inter, sans-serif'
+  }}>
+    <div style={{ textAlign: 'center' }}>
+      <div style={{
+        marginBottom: '1rem',
+        fontSize: '2rem'
+      }}>
+        🏠
+      </div>
+      <div>Cargando Novaterra...</div>
+    </div>
+  </div>
+);
 
-// Configuración de desarrollo - mostrar errores detallados
-if (import.meta.env.DEV) {
-  console.log('🚀 Novaterra Lifestyle - Modo Desarrollo')
-  console.log('📍 Versión:', import.meta.env.VITE_APP_VERSION || '1.0.0')
-}
-
-// Crear root de React 18 y montar aplicación
+//===============================================
+//🏗️ RENDERIZADO CON ROUTER
+//===============================================
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+    <BrowserRouter>
+      <Suspense fallback={<Loading />}>
+        <App />
+      </Suspense>
+    </BrowserRouter>
+  </React.StrictMode>
+);

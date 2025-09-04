@@ -1,0 +1,84 @@
+{
+  "nav": {
+    "properties": "Propiedades",
+    "experiences": "Experiencias",
+    "services": "Servicios",
+    "contact": "Contacto",
+    "login": "Iniciar Sesión"
+  },
+  "hero": {
+    "title": "Descubre Cantabria",
+    "subtitle": "Propiedades exclusivas y experiencias premium",
+    "cta": "Explorar Propiedades"
+  },
+  "home": {
+    "welcome": {
+      "title": "Bienvenido a Novaterra",
+      "description": "Tu portal premium para descubrir las mejores propiedades y experiencias exclusivas en Cantabria."
+    },
+    "features": {
+      "properties": {
+        "title": "Propiedades Exclusivas",
+        "description": "Descubre villas de lujo con vistas al mar Cantábrico"
+      },
+      "experiences": {
+        "title": "Experiencias Premium", 
+        "description": "Vive aventuras únicas en la región más bella del norte"
+      },
+      "services": {
+        "title": "Servicios Personalizados",
+        "description": "Atención 24/7 para hacer tu estancia perfecta"
+      }
+    }
+  },
+  "footer": {
+    "company": {
+      "description": "Especialistas en propiedades exclusivas y experiencias premium en Cantabria."
+    },
+    "quickLinks": {
+      "title": "Enlaces Rápidos",
+      "home": "Inicio"
+    },
+    "services": {
+      "title": "Servicios",
+      "concierge": "Concierge Premium",
+      "chef": "Chef Privado", 
+      "transport": "Transporte",
+      "wellness": "Spa & Wellness"
+    },
+    "legal": {
+      "title": "Legal",
+      "terms": "Términos y Condiciones",
+      "privacy": "Política de Privacidad",
+      "cookies": "Política de Cookies",
+      "legal": "Aviso Legal",
+      "refund": "Cancelación y Reembolso"
+    },
+    "rights": "Todos los derechos reservados."
+  },
+  "auth": {
+    "loginTitle": "Accede a tu cuenta",
+    "registerTitle": "Crear cuenta nueva", 
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "loginButton": "Iniciar Sesión",
+    "registerButton": "Registrese",
+    "switchToRegister": "¿No tienes cuenta?",
+    "switchToLogin": "¿Ya tienes cuenta?",
+    "errors": {
+      "emailRequired": "El correo electrónico es obligatorio",
+      "emailInvalid": "Por favor, ingresa un correo electrónico válido", 
+      "passwordRequired": "La contraseña es obligatoria",
+      "passwordWeak": "La contraseña debe tener al menos 8 caracteres",
+      "confirmPasswordRequired": "Debes confirmar tu contraseña",
+      "passwordMismatch": "Las contraseñas no coinciden",
+      "submitError": "Error al procesar la solicitud. Inténtalo de nuevo."
+    }
+  },
+  "common": {
+    "close": "Cerrar",
+    "loading": "Cargando...",
+    "error": "Error"
+  }
+}
