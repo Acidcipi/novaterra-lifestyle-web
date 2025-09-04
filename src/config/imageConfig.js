@@ -5,9 +5,9 @@
 // Solo necesitas cambiar los nombres de las imágenes aquí
 // Pon tus imágenes en la carpeta public/images/header/
 export const HEADER_IMAGES = [
-  'cabarceno.jpg',
   'tina-menor.jpg',
   'castro.jpg',
+  'cabarceno.jpg',
   'saltacaballo.jpg',
   'la-magdalena.jpg'
 ];

@@ -1,12 +1,12 @@
 //===============================================
-//📸 HEADER DEFINITIVO CORREGIDO - src/components/Header.jsx
+//📸 HEADER CON USUARIO LOGUEADO - src/components/Header.jsx
 //===============================================
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGUAGES } from '../i18n/config';
 
-const Header = ({ onLoginClick }) => {
+const Header = ({ onLoginClick, user, onLogout, isAuthenticated }) => {
   const { t, i18n } = useTranslation();
   const location = useLocation();
   
@@ -15,6 +15,7 @@ const Header = ({ onLoginClick }) => {
   //===============================================
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   
   // Array directo de imágenes locales
   const headerImages = [
@@ -47,7 +48,7 @@ const Header = ({ onLoginClick }) => {
     localStorage.setItem('novaterra-language', newLanguage);
   }, [i18n]);
 
-  // TODAS las banderas para TODOS los idiomas de tu config
+  // TODAS las banderas para TODOS los idiomas
   const getLanguageDisplay = (language) => {
     const languages = {
       'es': '🇪🇸 Español',
@@ -67,27 +68,34 @@ const Header = ({ onLoginClick }) => {
   };
 
   //===============================================
-  //📱 MANEJADORES MENU DESPLEGABLE SERVICIOS
+  //📱 MANEJADORES MENU DESPLEGABLES
   //===============================================
   const toggleServicesMenu = useCallback(() => {
     setIsServicesOpen(prev => !prev);
+    setIsUserMenuOpen(false);
   }, []);
 
-  const closeServicesMenu = useCallback(() => {
+  const toggleUserMenu = useCallback(() => {
+    setIsUserMenuOpen(prev => !prev);
     setIsServicesOpen(false);
   }, []);
 
-  // Cerrar menú al hacer clic fuera
+  const closeMenus = useCallback(() => {
+    setIsServicesOpen(false);
+    setIsUserMenuOpen(false);
+  }, []);
+
+  // Cerrar menús al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.nav-dropdown')) {
-        closeServicesMenu();
+      if (!event.target.closest('.nav-dropdown') && !event.target.closest('.user-menu')) {
+        closeMenus();
       }
     };
 
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
-  }, [closeServicesMenu]);
+  }, [closeMenus]);
 
   //===============================================
   //🎨 RENDERIZADO DEL COMPONENTE
@@ -147,27 +155,27 @@ const Header = ({ onLoginClick }) => {
           </Link>
         </div>
 
-        {/* Enlaces de navegación - SIN CONTACTO */}
+        {/* Enlaces de navegación usando traducciones */}
         <div className="nav-links">
           <Link 
             to="/" 
             className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
           >
-            Inicio
+            {t('nav.home')}
           </Link>
           
           <Link 
             to="/propiedades" 
             className={`nav-link ${location.pathname === '/propiedades' ? 'active' : ''}`}
           >
-            Propiedades
+            {t('nav.properties')}
           </Link>
           
           <Link 
             to="/experiencias" 
             className={`nav-link ${location.pathname === '/experiencias' ? 'active' : ''}`}
           >
-            Experiencias
+            {t('nav.experiences')}
           </Link>
           
           {/* Dropdown de Servicios */}
@@ -178,7 +186,7 @@ const Header = ({ onLoginClick }) => {
               }`}
               onClick={toggleServicesMenu}
             >
-              Servicios ▼
+              {t('nav.services')} ▼
             </span>
             
             {isServicesOpen && (
@@ -186,14 +194,14 @@ const Header = ({ onLoginClick }) => {
                 <Link 
                   to="/servicios" 
                   className="dropdown-item"
-                  onClick={closeServicesMenu}
+                  onClick={closeMenus}
                 >
                   Servicios Básicos
                 </Link>
                 <Link 
                   to="/servicios-premium" 
                   className="dropdown-item"
-                  onClick={closeServicesMenu}
+                  onClick={closeMenus}
                 >
                   Servicios Premium
                 </Link>
@@ -202,23 +210,68 @@ const Header = ({ onLoginClick }) => {
           </div>
         </div>
 
-        {/* Acciones del header - LOGIN PRIMERO, IDIOMA SEGUNDO */}
+        {/* Acciones del header - CONDICIONAL SEGÚN AUTENTICACIÓN */}
         <div className="header-actions">
-          {/* Login PRIMERO (izquierda) */}
-          <button 
-            className="login-btn"
-            onClick={onLoginClick}
-            aria-label="Iniciar sesión"
-          >
-            Iniciar Sesión
-          </button>
+          {/* SI NO ESTÁ LOGUEADO - Mostrar botón login */}
+          {!isAuthenticated ? (
+            <>
+              <button 
+                className="login-btn"
+                onClick={onLoginClick}
+                aria-label={t('nav.login')}
+              >
+                {t('nav.login')}
+              </button>
+            </>
+          ) : (
+            /* SI ESTÁ LOGUEADO - Mostrar menú de usuario */
+            <div className="user-menu">
+              <button 
+                className="user-btn"
+                onClick={toggleUserMenu}
+                aria-label="Menú de usuario"
+              >
+                👤 {user?.displayName || user?.email?.split('@')[0] || 'Usuario'}
+              </button>
+              
+              {isUserMenuOpen && (
+                <div className="user-dropdown">
+                  <Link 
+                    to="/dashboard" 
+                    className="dropdown-item"
+                    onClick={closeMenus}
+                  >
+                    📊 Mi Dashboard
+                  </Link>
+                  <Link 
+                    to="/perfil" 
+                    className="dropdown-item"
+                    onClick={closeMenus}
+                  >
+                    👤 Mi Perfil
+                  </Link>
+                  <hr className="dropdown-divider" />
+                  <button 
+                    className="dropdown-item logout-item"
+                    onClick={() => {
+                      onLogout();
+                      closeMenus();
+                    }}
+                  >
+                    🚪 Cerrar Sesión
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
           
-          {/* Idioma SEGUNDO (derecha) con TODAS las banderas */}
+          {/* Idioma SIEMPRE visible */}
           <div className="language-selector">
             <select 
               value={i18n.language} 
               onChange={handleLanguageChange}
               aria-label="Seleccionar idioma"
+              className="language-select"
             >
               {SUPPORTED_LANGUAGES.map(lang => (
                 <option key={lang} value={lang}>

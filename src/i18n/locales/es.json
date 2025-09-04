@@ -1,5 +1,6 @@
 {
   "nav": {
+    "home": "Inicio",
     "properties": "Propiedades",
     "experiences": "Experiencias",
     "services": "Servicios",
@@ -11,66 +12,57 @@
     "subtitle": "Propiedades exclusivas y experiencias premium",
     "cta": "Explorar Propiedades"
   },
-  "home": {
-    "welcome": {
-      "title": "Bienvenido a Novaterra",
-      "description": "Tu portal premium para descubrir las mejores propiedades y experiencias exclusivas en Cantabria."
+  "pages": {
+    "properties": {
+      "title": "Propiedades",
+      "description": "Descubre propiedades únicas en los lugares más privilegiados de Cantabria. Desde villas con vistas al mar hasta casas rurales en los Picos de Europa."
     },
-    "features": {
-      "properties": {
-        "title": "Propiedades Exclusivas",
-        "description": "Descubre villas de lujo con vistas al mar Cantábrico"
-      },
-      "experiences": {
-        "title": "Experiencias Premium", 
-        "description": "Vive aventuras únicas en la región más bella del norte"
-      },
-      "services": {
-        "title": "Servicios Personalizados",
-        "description": "Atención 24/7 para hacer tu estancia perfecta"
-      }
-    }
-  },
-  "footer": {
-    "company": {
-      "description": "Especialistas en propiedades exclusivas y experiencias premium en Cantabria."
-    },
-    "quickLinks": {
-      "title": "Enlaces Rápidos",
-      "home": "Inicio"
+    "experiences": {
+      "title": "Experiencias",
+      "description": "Próximamente: Experiencias únicas en Cantabria."
     },
     "services": {
       "title": "Servicios",
-      "concierge": "Concierge Premium",
-      "chef": "Chef Privado", 
-      "transport": "Transporte",
-      "wellness": "Spa & Wellness"
-    },
-    "legal": {
-      "title": "Legal",
-      "terms": "Términos y Condiciones",
-      "privacy": "Política de Privacidad",
-      "cookies": "Política de Cookies",
-      "legal": "Aviso Legal",
-      "refund": "Cancelación y Reembolso"
-    },
-    "rights": "Todos los derechos reservados."
+      "description": "Próximamente: Servicios premium personalizados."
+    }
+  },
+  "footer": {
+    "company": "Novaterra",
+    "description": "Tu puerta de entrada a Cantabria. Ofrecemos propiedades exclusivas, experiencias únicas y servicios premium para que descubras lo mejor del norte de España.",
+    "location": "Ubicación",
+    "locationText": "Santander, Cantabria, España",
+    "links": "Enlaces Útiles",
+    "contactTitle": "Contacto",
+    "email": "Email",
+    "phone": "Teléfono",
+    "schedule": "Horario",
+    "scheduleText": "Lun-Vie: 9:00 - 18:00\nSáb: 10:00 - 14:00",
+    "followUs": "Síguenos",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "youtube": "YouTube",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos y Condiciones",
+    "help": "Ayuda",
+    "sitemap": "Mapa del Sitio",
+    "copyright": "© 2025 Novaterra. Todos los derechos reservados. | Diseñado con ❤️ para Cantabria"
   },
   "auth": {
-    "loginTitle": "Accede a tu cuenta",
-    "registerTitle": "Crear cuenta nueva", 
-    "email": "Correo electrónico",
+    "loginTitle": "Acceder a tu cuenta",
+    "registerTitle": "Crear cuenta",
+    "email": "Email",
     "password": "Contraseña",
     "confirmPassword": "Confirmar contraseña",
     "loginButton": "Iniciar Sesión",
-    "registerButton": "Registrese",
-    "switchToRegister": "¿No tienes cuenta?",
-    "switchToLogin": "¿Ya tienes cuenta?",
+    "registerButton": "Registrarse",
+    "switchToRegister": "¿No tienes cuenta? Regístrate",
+    "switchToLogin": "¿Ya tienes cuenta? Inicia Sesión",
     "errors": {
-      "emailRequired": "El correo electrónico es obligatorio",
-      "emailInvalid": "Por favor, ingresa un correo electrónico válido", 
+      "emailRequired": "El email es obligatorio",
+      "emailInvalid": "Por favor ingresa un email válido",
       "passwordRequired": "La contraseña es obligatoria",
-      "passwordWeak": "La contraseña debe tener al menos 8 caracteres",
+      "passwordWeak": "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número",
       "confirmPasswordRequired": "Debes confirmar tu contraseña",
       "passwordMismatch": "Las contraseñas no coinciden",
       "submitError": "Error al procesar la solicitud. Inténtalo de nuevo."

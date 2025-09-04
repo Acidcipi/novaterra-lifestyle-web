@@ -1,102 +1,95 @@
 //===============================================
-//🏠 APP CON SISTEMA DE ROUTING COMPLETO Y CORREGIDO
+//🏠 APP CON AUTENTICACIÓN FIREBASE COMPLETA
 //===============================================
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+
+// Importar el hook de autenticación
+import { useAuth } from './hooks/useAuth';
 
 // Importar componentes
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { SUPPORTED_LANGUAGES } from './i18n/config';
+import Dashboard from './components/Dashboard'; // NUEVO: Panel principal para usuarios logueados
 
-// Importar páginas
+// Importar páginas públicas
 import Home from './pages/Home';
 import Properties from './pages/Properties';
 import Experiences from './pages/Experiences';
 import Services from './pages/Services';
-import PremiumServices from './pages/PremiumServices'; // NUEVO: Servicios Premium
+import PremiumServices from './pages/PremiumServices';
 import Contact from './pages/Contact';
 
 import './App.css';
 
 //===============================================
-//🗗️ COMPONENTE PRINCIPAL CON ROUTING CORREGIDO
+//🗗️ COMPONENTE PRINCIPAL CON AUTENTICACIÓN
 //===============================================
 const App = () => {
   const { t, i18n } = useTranslation();
   const location = useLocation();
+  const { user, login, register, logout, loading, error, clearError, isAuthenticated } = useAuth();
   
   //===============================================
-  //📊 ESTADOS DEL COMPONENTE
+  //📊 ESTADOS DEL MODAL
   //===============================================
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    displayName: ''
   });
   const [formErrors, setFormErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   //===============================================
-  //🔧 EFECTOS DE INICIALIZACIÓN
+  //🔧 EFECTOS DE INICIALIZACIÓN - SIN SCROLL AUTOMÁTICO
   //===============================================
-  // Cargar idioma guardado
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem('novaterra-language');
-    if (savedLanguage && 
-        SUPPORTED_LANGUAGES.includes(savedLanguage) && 
-        i18n.language !== savedLanguage) {
-      i18n.changeLanguage(savedLanguage);
-    }
-  }, [i18n]);
-
-  // Scroll to top en cambio de página
-  useEffect(() => {
-    window.scrollTo(0, 0);
+  React.useEffect(() => {
+    // Comentado para mantener posición del scroll
+    // window.scrollTo(0, 0);
   }, [location]);
 
   //===============================================
-  //✅ FUNCIONES DE VALIDACIÓN CON SEGURIDAD MEJORADA
+  //✅ FUNCIONES DE VALIDACIÓN MEJORADAS
   //===============================================
   const validateEmail = useCallback((email) => {
-    // Regex más estricta para validación de email
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     return emailRegex.test(email.trim());
   }, []);
 
   const validatePassword = useCallback((password) => {
-    // Validación más robusta: mínimo 8 caracteres, al menos una mayúscula, una minúscula, un número
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
     return passwordRegex.test(password);
   }, []);
 
   const sanitizeInput = useCallback((input) => {
-    // Limpiar input de caracteres potencialmente peligrosos
     return input.trim().replace(/[<>]/g, '');
   }, []);
 
   const validateForm = useCallback(() => {
     const errors = {};
     
-    // Validar email
     if (!formData.email) {
       errors.email = t('auth.errors.emailRequired');
     } else if (!validateEmail(formData.email)) {
       errors.email = t('auth.errors.emailInvalid');
     }
     
-    // Validar contraseña
     if (!formData.password) {
       errors.password = t('auth.errors.passwordRequired');
     } else if (!validatePassword(formData.password)) {
-      errors.password = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número';
+      errors.password = t('auth.errors.passwordWeak');
     }
     
-    // Validar confirmación de contraseña en registro
     if (isRegisterMode) {
+      if (!formData.displayName.trim()) {
+        errors.displayName = 'El nombre es obligatorio';
+      }
+      
       if (!formData.confirmPassword) {
         errors.confirmPassword = t('auth.errors.confirmPasswordRequired');
       } else if (formData.password !== formData.confirmPassword) {
@@ -114,35 +107,37 @@ const App = () => {
   const openLoginModal = useCallback(() => {
     setIsLoginModalOpen(true);
     setIsRegisterMode(false);
-    setFormData({ email: '', password: '', confirmPassword: '' });
+    setFormData({ email: '', password: '', confirmPassword: '', displayName: '' });
     setFormErrors({});
-    // Prevenir scroll del body cuando el modal está abierto
+    clearError();
     document.body.style.overflow = 'hidden';
-  }, []);
+  }, [clearError]);
 
   const closeModal = useCallback(() => {
     setIsLoginModalOpen(false);
-    setFormData({ email: '', password: '', confirmPassword: '' });
+    setFormData({ email: '', password: '', confirmPassword: '', displayName: '' });
     setFormErrors({});
-    setIsLoading(false);
-    // Restaurar scroll del body
+    setIsSubmitting(false);
+    clearError();
     document.body.style.overflow = 'unset';
-  }, []);
+  }, [clearError]);
 
   const switchToRegister = useCallback(() => {
     setIsRegisterMode(true);
     setFormErrors({});
-    setFormData(prev => ({ ...prev, confirmPassword: '' }));
-  }, []);
+    clearError();
+    setFormData(prev => ({ ...prev, confirmPassword: '', displayName: '' }));
+  }, [clearError]);
 
   const switchToLogin = useCallback(() => {
     setIsRegisterMode(false);
     setFormErrors({});
-    setFormData(prev => ({ ...prev, confirmPassword: '' }));
-  }, []);
+    clearError();
+    setFormData(prev => ({ ...prev, confirmPassword: '', displayName: '' }));
+  }, [clearError]);
 
   //===============================================
-  //📝 MANEJADORES DE FORMULARIO CON SEGURIDAD
+  //📝 MANEJADORES DE FORMULARIO CON FIREBASE
   //===============================================
   const handleInputChange = useCallback((event) => {
     const { name, value } = event.target;
@@ -153,53 +148,65 @@ const App = () => {
       [name]: sanitizedValue
     }));
     
-    // Limpiar errores del campo cuando el usuario empiece a escribir
     if (formErrors[name]) {
       setFormErrors(prev => ({
         ...prev,
         [name]: ''
       }));
     }
-  }, [formErrors, sanitizeInput]);
+    
+    clearError();
+  }, [formErrors, sanitizeInput, clearError]);
 
   const handleFormSubmit = useCallback(async (event) => {
     event.preventDefault();
     
-    if (!validateForm() || isLoading) {
+    if (!validateForm() || isSubmitting) {
       return;
     }
     
-    setIsLoading(true);
+    setIsSubmitting(true);
     
     try {
-      // Simular llamada a API con timeout más realista
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      let result;
       
-      // Aquí irían las llamadas reales a tu API
-      console.log('✅ Formulario enviado de forma segura:', {
-        email: formData.email,
-        mode: isRegisterMode ? 'register' : 'login',
-        timestamp: new Date().toISOString()
-      });
+      if (isRegisterMode) {
+        result = await register(formData.email, formData.password, formData.displayName);
+      } else {
+        result = await login(formData.email, formData.password);
+      }
       
-      // Simular éxito y cerrar modal
-      closeModal();
-      
-      // Mostrar mensaje de éxito (opcional)
-      // Podrías agregar un sistema de notificaciones aquí
+      if (result.success) {
+        closeModal();
+        console.log(`✅ ${isRegisterMode ? 'Registro' : 'Login'} exitoso:`, result.message);
+      } else {
+        setFormErrors({
+          submit: result.error
+        });
+      }
       
     } catch (error) {
-      console.error('❌ Error de autenticación:', error);
+      console.error('❌ Error inesperado:', error);
       setFormErrors({
-        submit: t('auth.errors.submitError')
+        submit: 'Error inesperado. Inténtalo de nuevo.'
       });
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
-  }, [formData, isRegisterMode, validateForm, isLoading, closeModal, t]);
+  }, [formData, isRegisterMode, validateForm, isSubmitting, register, login, closeModal]);
 
   //===============================================
-  //🎨 CONTENIDO DEL MODAL CON SEGURIDAD MEJORADA
+  //🚪 MANEJADOR DE LOGOUT
+  //===============================================
+  const handleLogout = useCallback(async () => {
+    const result = await logout();
+    if (result.success) {
+      console.log('✅ Logout exitoso');
+    }
+  }, [logout]);
+
+  //===============================================
+  //🎨 CONTENIDO DEL MODAL DE AUTENTICACIÓN
   //===============================================
   const modalContent = useMemo(() => {
     if (!isLoginModalOpen) return null;
@@ -211,7 +218,7 @@ const App = () => {
             className="modal-close" 
             onClick={closeModal}
             aria-label={t('common.close')}
-            disabled={isLoading}
+            disabled={isSubmitting}
           >
             ✕
           </button>
@@ -221,6 +228,29 @@ const App = () => {
           </h2>
           
           <form className="auth-form" onSubmit={handleFormSubmit} noValidate>
+            {isRegisterMode && (
+              <div className="form-group">
+                <label htmlFor="displayName">Nombre completo</label>
+                <input 
+                  type="text"
+                  id="displayName"
+                  name="displayName"
+                  value={formData.displayName}
+                  onChange={handleInputChange}
+                  required
+                  disabled={isSubmitting}
+                  maxLength="50"
+                  autoComplete="name"
+                  aria-describedby={formErrors.displayName ? "displayName-error" : undefined}
+                />
+                {formErrors.displayName && (
+                  <span id="displayName-error" className="form-error" role="alert">
+                    {formErrors.displayName}
+                  </span>
+                )}
+              </div>
+            )}
+            
             <div className="form-group">
               <label htmlFor="email">{t('auth.email')}</label>
               <input 
@@ -230,7 +260,7 @@ const App = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                disabled={isLoading}
+                disabled={isSubmitting}
                 maxLength="254"
                 autoComplete="email"
                 aria-describedby={formErrors.email ? "email-error" : undefined}
@@ -251,7 +281,7 @@ const App = () => {
                 value={formData.password}
                 onChange={handleInputChange}
                 required
-                disabled={isLoading}
+                disabled={isSubmitting}
                 minLength="8"
                 maxLength="128"
                 autoComplete={isRegisterMode ? "new-password" : "current-password"}
@@ -274,7 +304,7 @@ const App = () => {
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                   required
-                  disabled={isLoading}
+                  disabled={isSubmitting}
                   minLength="8"
                   maxLength="128"
                   autoComplete="new-password"
@@ -288,19 +318,19 @@ const App = () => {
               </div>
             )}
             
-            {formErrors.submit && (
+            {(formErrors.submit || error) && (
               <div className="form-error submit-error" role="alert">
-                {formErrors.submit}
+                {formErrors.submit || error}
               </div>
             )}
             
             <button 
               type="submit" 
               className="auth-submit"
-              disabled={isLoading}
+              disabled={isSubmitting || loading}
             >
-              {isLoading ? (
-                <span>{t('common.loading')}</span>
+              {isSubmitting ? (
+                <span>Procesando...</span>
               ) : (
                 isRegisterMode ? t('auth.registerButton') : t('auth.loginButton')
               )}
@@ -314,7 +344,7 @@ const App = () => {
                 <button 
                   className="link-button" 
                   onClick={switchToLogin}
-                  disabled={isLoading}
+                  disabled={isSubmitting}
                 >
                   Inicia Sesión
                 </button>
@@ -325,7 +355,7 @@ const App = () => {
                 <button 
                   className="link-button" 
                   onClick={switchToRegister}
-                  disabled={isLoading}
+                  disabled={isSubmitting}
                 >
                   Regístrate
                 </button>
@@ -335,24 +365,60 @@ const App = () => {
         </div>
       </div>
     );
-  }, [isLoginModalOpen, isRegisterMode, formData, formErrors, isLoading, t, closeModal, handleFormSubmit, handleInputChange, switchToLogin, switchToRegister]);
+  }, [isLoginModalOpen, isRegisterMode, formData, formErrors, isSubmitting, error, loading, t, closeModal, handleFormSubmit, handleInputChange, switchToLogin, switchToRegister]);
 
   //===============================================
-  //🎨 RENDERIZADO PRINCIPAL CON RUTAS CORREGIDAS
+  //🎨 RENDERIZADO PRINCIPAL CON AUTENTICACIÓN
   //===============================================
+  
+  // Mostrar loading mientras se verifica la autenticación
+  if (loading) {
+    return (
+      <div className="App">
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          background: '#1a1a1a',
+          color: '#d4af37',
+          fontSize: '1.2rem'
+        }}>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ marginBottom: '1rem', fontSize: '2rem' }}>
+              🏠
+            </div>
+            <div>Cargando Novaterra...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="App">
-      {/* --------HEADER GLOBAL-------- */}
-      <Header onLoginClick={openLoginModal} />
+      {/* --------HEADER CON ESTADO DE AUTENTICACIÓN-------- */}
+      <Header 
+        onLoginClick={openLoginModal} 
+        user={user}
+        onLogout={handleLogout}
+        isAuthenticated={isAuthenticated}
+      />
       
-      {/* --------SISTEMA DE RUTAS CORREGIDO-------- */}
+      {/* --------SISTEMA DE RUTAS CON PROTECCIÓN-------- */}
       <Routes>
+        {/* Rutas públicas */}
         <Route path="/" element={<Home />} />
         <Route path="/propiedades" element={<Properties />} />
         <Route path="/experiencias" element={<Experiences />} />
         <Route path="/servicios" element={<Services />} />
-        <Route path="/servicios-premium" element={<PremiumServices />} /> {/* NUEVA RUTA */}
+        <Route path="/servicios-premium" element={<PremiumServices />} />
         <Route path="/contacto" element={<Contact />} />
+        
+        {/* Ruta protegida para usuarios logueados */}
+        {isAuthenticated && (
+          <Route path="/dashboard" element={<Dashboard user={user} />} />
+        )}
         
         {/* Ruta 404 */}
         <Route path="*" element={
@@ -371,10 +437,10 @@ const App = () => {
         } />
       </Routes>
 
-      {/* --------FOOTER REORGANIZADO-------- */}
+      {/* --------FOOTER-------- */}
       <Footer />
       
-      {/* --------MODAL LOGIN/REGISTRO CORREGIDO-------- */}
+      {/* --------MODAL DE AUTENTICACIÓN-------- */}
       {modalContent}
     </div>
   );

@@ -229,7 +229,7 @@ body {
 }
 
 /*===============================================*/
-/*ACCIONES HEADER - LOGIN PRIMERO*/
+/*ACCIONES HEADER - LOGIN*/
 /*===============================================*/
 .header-actions {
   display: flex;
@@ -734,6 +734,33 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
 }
+
+/* Agregar al final de tu App.css */
+
+/*===============================================*/
+/*🚩 MEJORAS PARA BANDERAS EN PC*/
+/*===============================================*/
+.language-select {
+  font-family: 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', sans-serif;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  text-rendering: optimizeLegibility;
+}
+
+/* Forzar renderizado de emojis */
+.language-select option {
+  font-family: 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', system-ui, sans-serif;
+  font-size: 0.9rem;
+}
+
+/* Específico para Chrome/Edge en Windows */
+@supports (-webkit-text-stroke: 1px transparent) {
+  .language-select {
+    font-family: 'Segoe UI Emoji', 'Twemoji Mozilla', system-ui, sans-serif;
+  }
+}
+
+/*===============================================*/
+/* FOOTER*/
 /*===============================================*/
 .footer {
   background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
@@ -915,5 +942,175 @@ body {
   .footer-links-grid {
     grid-template-columns: 1fr;
     gap: 0.5rem;
+  }
+}
+
+/*===============================================*/
+/*🏠 ESTILOS DASHBOARD*/
+/*===============================================*/
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.dashboard-welcome {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.dashboard-card {
+  background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+  border: 2px solid #d4af37;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+  border-color: #f4d03f;
+}
+
+.card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.dashboard-card h3 {
+  color: #d4af37;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.dashboard-card p {
+  color: #ffffff;
+  opacity: 0.8;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.card-button {
+  background: linear-gradient(45deg, #d4af37, #f4d03f);
+  color: #1a1a1a;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+}
+
+.user-info {
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.user-info p {
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  opacity: 0.9;
+}
+
+.status {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status.verified {
+  background: rgba(46, 160, 67, 0.2);
+  color: #4caf50;
+}
+
+.status.pending {
+  background: rgba(255, 152, 0, 0.2);
+  color: #ff9800;
+}
+
+.dashboard-notifications {
+  background: #2a2a2a;
+  border: 1px solid #d4af37;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.dashboard-notifications h3 {
+  color: #d4af37;
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.notification-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(212, 175, 55, 0.05);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.notification-item:last-child {
+  margin-bottom: 0;
+}
+
+.notification-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.notification-content h4 {
+  color: #d4af37;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.notification-content p {
+  color: #ffffff;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.notification-time {
+  color: #d4af37;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .dashboard-card {
+    padding: 1.5rem;
+  }
+  
+  .notification-item {
+    flex-direction: column;
+    text-align: center;
   }
 }

@@ -1,306 +1,76 @@
 {
   "nav": {
     "home": "Home",
-    "offers": "Offers",
-    "experiences": "Experiences",
     "properties": "Properties",
-    "journeys": "Journeys",
-    "dashboard": "Dashboard",
-    "bookings": "Bookings",
-    "profile": "Profile",
-    "settings": "Settings",
-    "help": "Help",
-    "contact": "Contact"
+    "experiences": "Experiences",
+    "services": "Services",
+    "contact": "Contact",
+    "login": "Login"
   },
   "hero": {
-    "title": "Your New Premium Home in Spain Awaits You",
-    "subtitle": "Discover exclusive properties in Cantabria and live unique experiences in northern Spain. Complete assistance for international buyers.",
-    "cta_primary": "Access Full Catalog",
-    "cta_secondary": "Register Free"
+    "title": "Discover Cantabria",
+    "subtitle": "Exclusive properties and premium experiences",
+    "cta": "Explore Properties"
   },
-  "cta": {
-    "login": "Login",
-    "register": "Sign Up",
-    "logout": "Logout",
-    "access_catalog": "Access Full Catalog",
-    "book_visit": "Book Visit",
-    "request_info": "Request Information",
-    "download_brochure": "Download Brochure",
-    "schedule_call": "Schedule Call",
-    "whatsapp_contact": "Contact via WhatsApp",
-    "view_details": "View Details",
-    "save_property": "Save Property",
-    "share": "Share",
-    "back": "Back",
-    "continue": "Continue",
-    "cancel": "Cancel",
-    "confirm": "Confirm"
-  },
-  "auth": {
-    "login_title": "Access to Novaterra Lifestyle",
-    "register_title": "Register at Novaterra Lifestyle",
-    "email": "Email address",
-    "password": "Password",
-    "confirm_password": "Confirm password",
-    "first_name": "First name",
-    "last_name": "Last name",
-    "phone": "Phone",
-    "country": "Country of residence",
-    "language_preference": "Preferred language",
-    "marketing_consent": "I agree to receive commercial information",
-    "terms_consent": "I accept the terms and conditions",
-    "privacy_consent": "I accept the privacy policy",
-    "login_button": "Sign In",
-    "register_button": "Create Account",
-    "forgot_password": "Forgot your password?",
-    "no_account": "Don't have an account?",
-    "already_account": "Already have an account?",
-    "social_login": "Sign in with",
-    "or_divider": "or continue with email"
-  },
-  "offers": {
-    "title": "Featured Offers",
-    "subtitle": "Exclusive selection of premium properties available now",
-    "limited_time": "Limited time offer",
-    "exclusive": "Exclusive",
-    "new_development": "New development",
-    "sea_views": "Sea views",
-    "mountain_views": "Mountain views",
-    "historic": "Historic",
-    "luxury": "Luxury",
-    "investment": "Investment"
-  },
-  "properties": {
-    "title": "Exclusive Properties",
-    "subtitle": "Discover our selection of premium properties in Cantabria",
-    "filters": {
-      "all": "All",
-      "houses": "Houses",
-      "apartments": "Apartments",
-      "villas": "Villas",
-      "rural": "Rural Houses",
-      "commercial": "Commercial",
-      "land": "Land",
-      "price_range": "Price range",
-      "bedrooms": "Bedrooms",
-      "bathrooms": "Bathrooms",
-      "size": "Size (m²)",
-      "location": "Location",
-      "features": "Features"
+  "pages": {
+    "properties": {
+      "title": "Properties",
+      "description": "Discover unique properties in the most privileged locations of Cantabria. From villas with sea views to rural houses in the Picos de Europa."
     },
-    "details": {
-      "price": "Price",
-      "bedrooms": "Bedrooms",
-      "bathrooms": "Bathrooms",
-      "size": "Surface area",
-      "plot_size": "Plot",
-      "built_year": "Year built",
-      "energy_rating": "Energy certificate",
-      "reference": "Reference",
-      "available_from": "Available from",
-      "property_type": "Property type",
-      "condition": "Condition",
-      "orientation": "Orientation",
-      "parking": "Parking",
-      "elevator": "Elevator",
-      "terrace": "Terrace",
-      "garden": "Garden",
-      "pool": "Pool",
-      "sea_distance": "Distance to sea",
-      "airport_distance": "Distance to airport",
-      "services_nearby": "Nearby services"
-    }
-  },
-  "experiences": {
-    "title": "Unique Experiences in Cantabria",
-    "subtitle": "Live exclusive experiences while discovering your future home",
-    "categories": {
-      "gastronomy": "Gastronomy",
-      "nature": "Nature",
-      "culture": "Culture",
-      "luxury": "Luxury",
-      "family": "Family",
-      "adventure": "Adventure",
-      "wellness": "Wellness",
-      "wine": "Wine Tourism"
+    "experiences": {
+      "title": "Experiences",
+      "description": "Coming soon: Unique experiences in Cantabria."
     },
-    "featured": {
-      "el_soplao_title": "El Soplao Cave",
-      "el_soplao_description": "Discover one of the most spectacular caves in the world with unique formations",
-      "cabarceno_title": "Cabárceno Park",
-      "cabarceno_description": "Natural safari in a unique environment with more than 120 animal species",
-      "picos_europa_title": "Picos de Europa",
-      "picos_europa_description": "Hiking and mountaineering routes in Spain's first national park",
-      "orujo_tasting_title": "Premium Orujo Tasting",
-      "orujo_tasting_description": "Exclusive tasting of the traditional Cantabrian distillate",
-      "glass_blowing_title": "Glass Blowing Workshop",
-      "glass_blowing_description": "Unique artisanal experience in traditional workshops",
-      "boat_tours_title": "Boat Tours",
-      "boat_tours_description": "Navigate the Cantabrian coast and discover hidden coves"
-    }
-  },
-  "why": {
-    "title": "Why Cantabria and Spain?",
-    "subtitle": "Discover the unique advantages of investing in northern Spain",
-    "benefits": {
-      "climate": {
-        "title": "Privileged Climate",
-        "description": "Average annual temperature of 16°C. Cool summers and mild winters. The perfect Atlantic climate for year-round living."
-      },
-      "security": {
-        "title": "Security and Stability",
-        "description": "Spain is one of the safest countries in the world. Stable political system and robust legal framework for foreign investments."
-      },
-      "nature": {
-        "title": "Exceptional Nature",
-        "description": "Between the Cantabrian Sea and Picos de Europa. Beaches, mountains, forests and spectacular caves just kilometers away."
-      },
-      "accessibility": {
-        "title": "Excellent Connectivity",
-        "description": "Santander Airport with European connections. High-speed rail and highways connecting to Madrid and the rest of Europe."
-      },
-      "culture": {
-        "title": "Rich Culture and Heritage",
-        "description": "Prehistoric caves of Altamira, Indian architecture, traditional festivals and world-renowned gastronomy."
-      },
-      "investment": {
-        "title": "Investment Opportunity",
-        "description": "Competitive prices compared to other European coastal regions. High potential for appreciation and tourism profitability."
-      }
-    }
-  },
-  "services": {
-    "title": "Comprehensive Services for International Buyers",
-    "subtitle": "We accompany you throughout the purchase process and beyond",
-    "legal": {
-      "title": "Legal and Tax Advisory",
-      "description": "Lawyers specialized in international real estate transactions. Tax optimization for non-residents."
-    },
-    "translation": {
-      "title": "Sworn Translation",
-      "description": "Official document translation service in your native language."
-    },
-    "nie_visa": {
-      "title": "NIE and Visa Management",
-      "description": "Complete processing of documentation for residence in Spain."
-    },
-    "banking": {
-      "title": "Banking Services",
-      "description": "Account opening and international transfer management."
-    },
-    "mortgage": {
-      "title": "Non-Resident Mortgages",
-      "description": "Specialized financing for foreign buyers up to 70%."
-    },
-    "property_management": {
-      "title": "Post-Sale Management",
-      "description": "Maintenance, vacation rental and complete management of your property."
-    }
-  },
-  "contact": {
-    "title": "Contact Us",
-    "subtitle": "We're here to help you find your ideal home",
-    "form": {
-      "name": "Full name",
-      "email": "Email address",
-      "phone": "Phone",
-      "country": "Country",
-      "subject": "Subject",
-      "message": "Message",
-      "property_interest": "Property of interest",
-      "budget_range": "Approximate budget",
-      "timeframe": "Purchase timeframe",
-      "send_button": "Send Inquiry",
-      "sending": "Sending...",
-      "sent": "Message sent successfully",
-      "error": "Error sending. Please try again."
-    },
-    "info": {
-      "office_address": "Santander Central Office",
-      "phone": "Phone",
-      "email": "Email",
-      "hours": "Office hours",
-      "hours_detail": "Monday to Friday: 9:00 - 18:00\nSaturdays: 10:00 - 14:00"
+    "services": {
+      "title": "Services",
+      "description": "Coming soon: Personalized premium services."
     }
   },
   "footer": {
-    "company": "Novaterra Lifestyle",
-    "tagline": "Your new premium home in Spain awaits you",
-    "description": "Exclusive properties and premium experiences in Cantabria. Comprehensive assistance for international buyers.",
-    "links": {
-      "about": "About us",
-      "properties": "Properties",
-      "experiences": "Experiences",
-      "services": "Services",
-      "blog": "Blog",
-      "press": "Press",
-      "careers": "Careers",
-      "investors": "Investors"
-    },
-    "legal": {
-      "privacy": "Privacy Policy",
-      "terms": "Terms and Conditions",
-      "cookies": "Cookie Policy",
-      "legal_notice": "Legal Notice"
-    },
-    "social": {
-      "follow": "Follow us"
-    },
-    "newsletter": {
-      "title": "Exclusive Newsletter",
-      "subtitle": "Receive the best offers and experiences",
-      "placeholder": "Your email",
-      "subscribe": "Subscribe"
-    },
-    "copyright": "© 2024 Novaterra Lifestyle. All rights reserved."
+    "company": "Novaterra",
+    "description": "Your gateway to Cantabria. We offer exclusive properties, unique experiences and premium services to discover the best of northern Spain.",
+    "location": "Location",
+    "locationText": "Santander, Cantabria, Spain",
+    "links": "Useful Links",
+    "contactTitle": "Contact",
+    "email": "Email",
+    "phone": "Phone",
+    "schedule": "Schedule",
+    "scheduleText": "Mon-Fri: 9:00 - 18:00\nSat: 10:00 - 14:00",
+    "followUs": "Follow Us",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "youtube": "YouTube",
+    "privacy": "Privacy Policy",
+    "terms": "Terms and Conditions",
+    "help": "Help",
+    "sitemap": "Site Map",
+    "copyright": "© 2025 Novaterra. All rights reserved. | Designed with ❤️ for Cantabria"
   },
-  "status": {
-    "loading": "Loading...",
-    "error": "Error",
-    "success": "Success",
-    "warning": "Warning",
-    "info": "Information",
-    "empty": "No results",
-    "offline": "Offline",
-    "try_again": "Try again",
-    "page_not_found": "Page not found",
-    "access_denied": "Access denied",
-    "session_expired": "Session expired"
-  },
-  "units": {
-    "meters": "meters",
-    "kilometers": "kilometers",
-    "minutes": "minutes",
-    "hours": "hours",
-    "days": "days",
-    "weeks": "weeks",
-    "months": "months",
-    "years": "years"
+  "auth": {
+    "loginTitle": "Access your account",
+    "registerTitle": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "loginButton": "Login",
+    "registerButton": "Register",
+    "switchToRegister": "Don't have an account? Register",
+    "switchToLogin": "Already have an account? Login",
+    "errors": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordWeak": "Password must be at least 8 characters, one uppercase, one lowercase and one number",
+      "confirmPasswordRequired": "You must confirm your password",
+      "passwordMismatch": "Passwords do not match",
+      "submitError": "Error processing request. Please try again."
+    }
   },
   "common": {
-    "and": "and",
-    "or": "or",
-    "of": "of",
-    "in": "in",
-    "at": "at",
-    "by": "by",
-    "for": "for",
-    "with": "with",
-    "from": "from",
-    "to": "to",
-    "more": "more",
-    "less": "less",
-    "all": "all",
-    "none": "none",
-    "yes": "yes",
-    "no": "no",
-    "maybe": "maybe",
-    "new": "new",
-    "old": "old",
-    "popular": "popular",
-    "featured": "featured",
-    "exclusive": "exclusive",
-    "premium": "premium",
-    "luxury": "luxury"
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "Error"
   }
 }
