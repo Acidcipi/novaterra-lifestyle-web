@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "home": "Início",
+    "properties": "Propriedades",
+    "experiences": "Experiências",
+    "services": "Serviços",
+    "contact": "Contato", 
+    "login": "Entrar"
+  }
+}

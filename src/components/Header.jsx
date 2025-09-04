@@ -48,21 +48,14 @@ const Header = ({ onLoginClick, user, onLogout, isAuthenticated }) => {
     localStorage.setItem('novaterra-language', newLanguage);
   }, [i18n]);
 
-  // TODAS las banderas para TODOS los idiomas
+  // 5 idiomas específicos con banderas
   const getLanguageDisplay = (language) => {
     const languages = {
       'es': '🇪🇸 Español',
       'en': '🇬🇧 English', 
-      'ru': '🇷🇺 Русский',
-      'ro': '🇷🇴 Română',
-      'pl': '🇵🇱 Polski',
-      'uk': '🇺🇦 Українська',
-      'mk': '🇲🇰 Македонски',
       'de': '🇩🇪 Deutsch',
-      'fr': '🇫🇷 Français',
-      'it': '🇮🇹 Italiano',
-      'pt': '🇵🇹 Português',
-      'nl': '🇳🇱 Nederlands'
+      'ru': '🇷🇺 Русский',
+      'mk': '🇲🇰 Македонски'
     };
     return languages[language] || `🌍 ${language.toUpperCase()}`;
   };

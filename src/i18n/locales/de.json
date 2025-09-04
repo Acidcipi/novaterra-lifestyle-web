@@ -1,0 +1,15 @@
+{
+  "nav": {
+    "home": "Startseite", 
+    "properties": "Immobilien",
+    "experiences": "Erlebnisse",
+    "services": "Dienstleistungen",
+    "contact": "Kontakt",
+    "login": "Anmelden"
+  },
+  "hero": {
+    "title": "Entdecke Kantabrien",
+    "subtitle": "Exklusive Immobilien und Premium-Erlebnisse",
+    "cta": "Immobilien erkunden"
+  }
+}

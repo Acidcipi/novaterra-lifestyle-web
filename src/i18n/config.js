@@ -1,30 +1,22 @@
 //===============================================
 //🌍 CONFIGURACIÓN INTERNACIONAL PROFESIONAL
 //===============================================
+
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
 
-// Importar traducciones desde archivos separados
+// Importar idiomas específicos
 import esTranslations from './locales/es.json';
-import enTranslations from './locales/en.json';
-import ruTranslations from './locales/ru.json';
-import roTranslations from './locales/ro.json';
-import plTranslations from './locales/pl.json';
-import ukTranslations from './locales/uk.json';
-import mkTranslations from './locales/mk.json';
+import enTranslations from './locales/en.json'; 
 import deTranslations from './locales/de.json';
-import frTranslations from './locales/fr.json';
-import itTranslations from './locales/it.json';
-import ptTranslations from './locales/pt.json';
-import nlTranslations from './locales/nl.json';
+import ruTranslations from './locales/ru.json';
+import mkTranslations from './locales/mk.json';
 
 //===============================================
-//🔒 CONFIGURACIÓN DE SEGURIDAD
+//🔒 IDIOMAS SOPORTADOS - 5 ESPECÍFICOS
 //===============================================
 export const SUPPORTED_LANGUAGES = [
-  'es', 'en', 'ru', 'ro', 'pl', 'uk',
-  'mk', 'de', 'fr', 'it', 'pt', 'nl'
+  'es', 'en', 'de', 'ru', 'mk'
 ];
 
 const validateLanguage = (lang) => {
@@ -71,16 +63,9 @@ i18n
     resources: {
       es: { translation: esTranslations },
       en: { translation: enTranslations },
-      ru: { translation: ruTranslations },
-      ro: { translation: roTranslations },
-      pl: { translation: plTranslations },
-      uk: { translation: ukTranslations },
-      mk: { translation: mkTranslations },
       de: { translation: deTranslations },
-      fr: { translation: frTranslations },
-      it: { translation: itTranslations },
-      pt: { translation: ptTranslations },
-      nl: { translation: nlTranslations }
+      ru: { translation: ruTranslations },
+      mk: { translation: mkTranslations }
     },
     
     fallbackLng: 'es',

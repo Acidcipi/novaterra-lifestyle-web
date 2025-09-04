@@ -1,0 +1,61 @@
+{
+  "nav": {
+    "home": "Acasă",
+    "properties": "Proprietăți", 
+    "experiences": "Experiențe",
+    "services": "Servicii",
+    "contact": "Contact",
+    "login": "Autentificare"
+  },
+  "hero": {
+    "title": "Descoperă Cantabria",
+    "subtitle": "Proprietăți exclusive și experiențe premium",
+    "cta": "Explorează proprietățile"
+  },
+  "pages": {
+    "properties": {
+      "title": "Proprietăți",
+      "description": "Descoperă proprietăți unice în cele mai privilegiate locații din Cantabria."
+    },
+    "experiences": {
+      "title": "Experiențe", 
+      "description": "În curând: Experiențe unice în Cantabria."
+    },
+    "services": {
+      "title": "Servicii",
+      "description": "În curând: Servicii premium personalizate."
+    }
+  },
+  "footer": {
+    "company": "Novaterra",
+    "description": "Poarta ta către Cantabria. Oferim proprietăți exclusive, experiențe unice și servicii premium.",
+    "links": "Linkuri utile",
+    "contactTitle": "Contact",
+    "copyright": "© 2025 Novaterra. Toate drepturile rezervate."
+  },
+  "auth": {
+    "loginTitle": "Accesează contul",
+    "registerTitle": "Creează cont", 
+    "email": "Email",
+    "password": "Parolă",
+    "confirmPassword": "Confirmă parola",
+    "loginButton": "Autentificare",
+    "registerButton": "Înregistrare",
+    "switchToRegister": "Nu ai cont? Înregistrează-te",
+    "switchToLogin": "Ai deja cont? Autentifică-te",
+    "errors": {
+      "emailRequired": "Email-ul este obligatoriu",
+      "emailInvalid": "Introduceți o adresă de email validă",
+      "passwordRequired": "Parola este obligatorie",
+      "passwordWeak": "Parola trebuie să aibă cel puțin 8 caractere, o majusculă, o minusculă și o cifră",
+      "confirmPasswordRequired": "Trebuie să confirmați parola",
+      "passwordMismatch": "Parolele nu se potrivesc",
+      "submitError": "Eroare la procesarea cererii. Încercați din nou."
+    }
+  },
+  "common": {
+    "close": "Închide",
+    "loading": "Se încarcă...",
+    "error": "Eroare"
+  }
+}
