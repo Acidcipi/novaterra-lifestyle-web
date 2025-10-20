@@ -1,0 +1,52 @@
+{
+  "home": {
+    "hero": {
+      "title": "Tu hogar ideal en Cantabria",
+      "subtitle": "Descubre propiedades premium en la costa cantábrica",
+      "cta": "Explorar Propiedades"
+    },
+    "features": {
+      "title": "¿Por qué elegir Novaterra?",
+      "feature1": {
+        "title": "Propiedades Exclusivas",
+        "description": "Selección cuidadosa de las mejores propiedades"
+      },
+      "feature2": {
+        "title": "Servicio Premium", 
+        "description": "Atención personalizada y profesional"
+      },
+      "feature3": {
+        "title": "Ubicaciones Privilegiadas",
+        "description": "En los mejores enclaves de Cantabria"
+      }
+    }
+  },
+  "about": {
+    "title": "Sobre Nosotros",
+    "subtitle": "Expertos en propiedades premium en Cantabria",
+    "description": "Con años de experiencia en el mercado inmobiliario cantábrico, nos especializamos en conectar a nuestros clientes con propiedades excepcionales.",
+    "mission": "Nuestra misión es hacer realidad el sueño de vivir en Cantabria",
+    "vision": "Ser la referencia en propiedades premium en el norte de España"
+  },
+  "contact": {
+    "title": "Contacta con Nosotros",
+    "subtitle": "Estamos aquí para ayudarte",
+    "form": {
+      "name": "Nombre completo",
+      "email": "Correo electrónico", 
+      "phone": "Teléfono",
+      "subject": "Asunto",
+      "message": "Mensaje",
+      "send": "Enviar Mensaje"
+    },
+    "info": {
+      "address": "Castro Urdiales, Cantabria",
+      "phone": "+34 942 123 456",
+      "email": "info@novaterra-lifestyle.com",
+      "hours": "Lunes a Viernes: 9:00 - 19:00"
+    }
+  },
+  "properties": {
+    "intro": "Descubre propiedades únicas en los lugares más privilegiados de Cantabria. Desde villas con vistas al mar hasta casas rurales en los Picos de Europa."
+  }
+}

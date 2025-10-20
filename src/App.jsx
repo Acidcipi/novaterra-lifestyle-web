@@ -1,17 +1,21 @@
 //===============================================
-//🏠 APP CON AUTENTICACIÓN FIREBASE COMPLETA
+//🏠 APP CON AUTENTICACIÓN FIREBASE + SISTEMA MODULAR DE TRADUCCIONES
 //===============================================
 import React, { useState, useCallback, useMemo } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useParams, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+
+// Importar configuración i18n MODULAR
+import './i18n/config';
 
 // Importar el hook de autenticación
 import { useAuth } from './hooks/useAuth';
 
-// Importar componentes
+// Importar componentes base
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Dashboard from './components/Dashboard'; // NUEVO: Panel principal para usuarios logueados
+import Dashboard from './components/Dashboard';
+import PropertyDetail from './components/PropertyDetail';
 
 // Importar páginas públicas
 import Home from './pages/Home';
@@ -21,18 +25,101 @@ import Services from './pages/Services';
 import PremiumServices from './pages/PremiumServices';
 import Contact from './pages/Contact';
 
+// Importar páginas PREVIEW (para usuarios no logueados)
+import PropertiesPreview from './pages/PropertiesPreview';
+import ExperiencesPreview from './pages/ExperiencesPreview';
+import ServicesPreview from './pages/ServicesPreview';
+
 import './App.css';
 
 //===============================================
-//🗗️ COMPONENTE PRINCIPAL CON AUTENTICACIÓN
+//🛡️ COMPONENTE PARA RUTAS PROTEGIDAS
+//===============================================
+function ProtectedRoute({ children }) {
+  const { user, loading } = useAuth();
+  
+  if (loading) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '50vh',
+        color: '#d4af37'
+      }}>
+        Cargando...
+      </div>
+    );
+  }
+  
+  return user ? children : <Navigate to="/" replace />;
+}
+
+//===============================================
+//🏠 COMPONENTE PARA RUTAS DINÁMICAS DE PROPIEDADES
+//===============================================
+function PropertyDetailRouter() {
+  const { propertyId } = useParams();
+  const { user } = useAuth();
+  
+  if (!user) {
+    return <Navigate to={`/preview/${propertyId}`} replace />;
+  }
+  
+  return <PropertyDetail propertyId={propertyId} category="services" />;
+}
+
+//===============================================
+//🔒 COMPONENTE PARA VISTAS PREVIEW DE PROPIEDADES
+//===============================================
+function PropertyPreviewRouter() {
+  const { propertyId } = useParams();
+  
+  return (
+    <div className="preview-container">
+      <div className="preview-header" style={{
+        background: '#1a1a1a',
+        color: '#d4af37',
+        padding: '2rem',
+        textAlign: 'center',
+        borderBottom: '2px solid #d4af37'
+      }}>
+        <h1>🔒 Vista Previa</h1>
+        <p>Regístrate para ver información completa de esta propiedad</p>
+        <button 
+          className="preview-button"
+          style={{
+            background: 'linear-gradient(135deg, #ff6b35, #ff8c42)',
+            color: 'white',
+            border: 'none',
+            padding: '1rem 2rem',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            marginTop: '1rem'
+          }}
+        >
+          Registrarse Gratis
+        </button>
+      </div>
+      <PropertyDetail 
+        propertyId={propertyId} 
+        category="services" 
+        isPreview={true} 
+      />
+    </div>
+  );
+}
+
+//===============================================
+//🗂️ COMPONENTE PRINCIPAL CON AUTENTICACIÓN
 //===============================================
 const App = () => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('common');
   const location = useLocation();
   const { user, login, register, logout, loading, error, clearError, isAuthenticated } = useAuth();
   
   //===============================================
-  //📊 ESTADOS DEL MODAL
+  //📊 ESTADOS DEL MODAL MEJORADOS
   //===============================================
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterMode, setIsRegisterMode] = useState(false);
@@ -44,13 +131,16 @@ const App = () => {
   });
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // NUEVOS ESTADOS PARA MOSTRAR CONTRASEÑAS
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   //===============================================
-  //🔧 EFECTOS DE INICIALIZACIÓN - SIN SCROLL AUTOMÁTICO
+  //🔧 EFECTOS DE INICIALIZACIÓN
   //===============================================
   React.useEffect(() => {
-    // Comentado para mantener posición del scroll
-    // window.scrollTo(0, 0);
+    // Mantener posición del scroll
   }, [location]);
 
   //===============================================
@@ -74,15 +164,15 @@ const App = () => {
     const errors = {};
     
     if (!formData.email) {
-      errors.email = t('auth.errors.emailRequired');
+      errors.email = 'Email requerido';
     } else if (!validateEmail(formData.email)) {
-      errors.email = t('auth.errors.emailInvalid');
+      errors.email = 'Email inválido';
     }
     
     if (!formData.password) {
-      errors.password = t('auth.errors.passwordRequired');
+      errors.password = 'Contraseña requerida';
     } else if (!validatePassword(formData.password)) {
-      errors.password = t('auth.errors.passwordWeak');
+      errors.password = 'Contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número';
     }
     
     if (isRegisterMode) {
@@ -91,33 +181,38 @@ const App = () => {
       }
       
       if (!formData.confirmPassword) {
-        errors.confirmPassword = t('auth.errors.confirmPasswordRequired');
+        errors.confirmPassword = 'Confirmar contraseña es requerido';
       } else if (formData.password !== formData.confirmPassword) {
-        errors.confirmPassword = t('auth.errors.passwordMismatch');
+        errors.confirmPassword = 'Las contraseñas no coinciden';
       }
     }
     
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
-  }, [formData, isRegisterMode, t, validateEmail, validatePassword]);
+  }, [formData, isRegisterMode, validateEmail, validatePassword]);
 
   //===============================================
-  //🎛️ MANEJADORES DE MODAL
+  //🎛️ MANEJADORES DE MODAL MEJORADOS
   //===============================================
   const openLoginModal = useCallback(() => {
     setIsLoginModalOpen(true);
     setIsRegisterMode(false);
-    setFormData({ email: '', password: '', confirmPassword: '', displayName: '' });
+    // NO limpiar formData para mantener datos en caso de error
     setFormErrors({});
     clearError();
+    setShowPassword(false);
+    setShowConfirmPassword(false);
     document.body.style.overflow = 'hidden';
   }, [clearError]);
 
   const closeModal = useCallback(() => {
     setIsLoginModalOpen(false);
+    // SOLO limpiar datos si el modal se cierra exitosamente
     setFormData({ email: '', password: '', confirmPassword: '', displayName: '' });
     setFormErrors({});
     setIsSubmitting(false);
+    setShowPassword(false);
+    setShowConfirmPassword(false);
     clearError();
     document.body.style.overflow = 'unset';
   }, [clearError]);
@@ -126,18 +221,23 @@ const App = () => {
     setIsRegisterMode(true);
     setFormErrors({});
     clearError();
-    setFormData(prev => ({ ...prev, confirmPassword: '', displayName: '' }));
+    // MANTENER email y password, solo agregar campos faltantes
+    setFormData(prev => ({ 
+      ...prev, 
+      confirmPassword: prev.password, // Pre-llenar confirmación
+      displayName: prev.displayName || ''
+    }));
   }, [clearError]);
 
   const switchToLogin = useCallback(() => {
     setIsRegisterMode(false);
     setFormErrors({});
     clearError();
-    setFormData(prev => ({ ...prev, confirmPassword: '', displayName: '' }));
+    // MANTENER email y password
   }, [clearError]);
 
   //===============================================
-  //📝 MANEJADORES DE FORMULARIO CON FIREBASE
+  //🔐 MANEJADORES DE FORMULARIO MEJORADOS
   //===============================================
   const handleInputChange = useCallback((event) => {
     const { name, value } = event.target;
@@ -148,6 +248,7 @@ const App = () => {
       [name]: sanitizedValue
     }));
     
+    // Limpiar error específico del campo
     if (formErrors[name]) {
       setFormErrors(prev => ({
         ...prev,
@@ -177,12 +278,13 @@ const App = () => {
       }
       
       if (result.success) {
-        closeModal();
-        console.log(`✅ ${isRegisterMode ? 'Registro' : 'Login'} exitoso:`, result.message);
+        closeModal(); // Solo cerrar si es exitoso
+        console.log(`✅ ${isRegisterMode ? 'Registro' : 'Login'} exitoso`);
       } else {
         setFormErrors({
           submit: result.error
         });
+        // NO cerrar modal, mantener datos
       }
       
     } catch (error) {
@@ -190,6 +292,7 @@ const App = () => {
       setFormErrors({
         submit: 'Error inesperado. Inténtalo de nuevo.'
       });
+      // NO cerrar modal, mantener datos
     } finally {
       setIsSubmitting(false);
     }
@@ -206,7 +309,7 @@ const App = () => {
   }, [logout]);
 
   //===============================================
-  //🎨 CONTENIDO DEL MODAL DE AUTENTICACIÓN
+  //🎨 CONTENIDO DEL MODAL MEJORADO CON OJITOS
   //===============================================
   const modalContent = useMemo(() => {
     if (!isLoginModalOpen) return null;
@@ -217,14 +320,14 @@ const App = () => {
           <button 
             className="modal-close" 
             onClick={closeModal}
-            aria-label={t('common.close')}
+            aria-label="Cerrar"
             disabled={isSubmitting}
           >
             ✕
           </button>
           
           <h2 className="modal-title">
-            {isRegisterMode ? t('auth.registerTitle') : t('auth.loginTitle')}
+            {isRegisterMode ? 'Registro' : 'Iniciar Sesión'}
           </h2>
           
           <form className="auth-form" onSubmit={handleFormSubmit} noValidate>
@@ -241,18 +344,15 @@ const App = () => {
                   disabled={isSubmitting}
                   maxLength="50"
                   autoComplete="name"
-                  aria-describedby={formErrors.displayName ? "displayName-error" : undefined}
                 />
                 {formErrors.displayName && (
-                  <span id="displayName-error" className="form-error" role="alert">
-                    {formErrors.displayName}
-                  </span>
+                  <span className="form-error">{formErrors.displayName}</span>
                 )}
               </div>
             )}
             
             <div className="form-group">
-              <label htmlFor="email">{t('auth.email')}</label>
+              <label htmlFor="email">Email</label>
               <input 
                 type="email"
                 id="email"
@@ -263,63 +363,96 @@ const App = () => {
                 disabled={isSubmitting}
                 maxLength="254"
                 autoComplete="email"
-                aria-describedby={formErrors.email ? "email-error" : undefined}
               />
               {formErrors.email && (
-                <span id="email-error" className="form-error" role="alert">
-                  {formErrors.email}
-                </span>
+                <span className="form-error">{formErrors.email}</span>
               )}
             </div>
             
             <div className="form-group">
-              <label htmlFor="password">{t('auth.password')}</label>
-              <input 
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                required
-                disabled={isSubmitting}
-                minLength="8"
-                maxLength="128"
-                autoComplete={isRegisterMode ? "new-password" : "current-password"}
-                aria-describedby={formErrors.password ? "password-error" : undefined}
-              />
-              {formErrors.password && (
-                <span id="password-error" className="form-error" role="alert">
-                  {formErrors.password}
-                </span>
-              )}
-            </div>
-            
-            {isRegisterMode && (
-              <div className="form-group">
-                <label htmlFor="confirmPassword">{t('auth.confirmPassword')}</label>
+              <label htmlFor="password">Contraseña</label>
+              <div style={{ position: 'relative' }}>
                 <input 
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  value={formData.password}
                   onChange={handleInputChange}
                   required
                   disabled={isSubmitting}
                   minLength="8"
                   maxLength="128"
-                  autoComplete="new-password"
-                  aria-describedby={formErrors.confirmPassword ? "confirm-password-error" : undefined}
+                  autoComplete={isRegisterMode ? "new-password" : "current-password"}
+                  style={{ paddingRight: '40px' }}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    color: '#d4af37',
+                    cursor: 'pointer',
+                    fontSize: '16px'
+                  }}
+                  disabled={isSubmitting}
+                >
+                  {showPassword ? '🙈' : '👁️'}
+                </button>
+              </div>
+              {formErrors.password && (
+                <span className="form-error">{formErrors.password}</span>
+              )}
+            </div>
+            
+            {isRegisterMode && (
+              <div className="form-group">
+                <label htmlFor="confirmPassword">Confirmar Contraseña</label>
+                <div style={{ position: 'relative' }}>
+                  <input 
+                    type={showConfirmPassword ? "text" : "password"}
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    required
+                    disabled={isSubmitting}
+                    minLength="8"
+                    maxLength="128"
+                    autoComplete="new-password"
+                    style={{ paddingRight: '40px' }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    style={{
+                      position: 'absolute',
+                      right: '10px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      background: 'none',
+                      border: 'none',
+                      color: '#d4af37',
+                      cursor: 'pointer',
+                      fontSize: '16px'
+                    }}
+                    disabled={isSubmitting}
+                  >
+                    {showConfirmPassword ? '🙈' : '👁️'}
+                  </button>
+                </div>
                 {formErrors.confirmPassword && (
-                  <span id="confirm-password-error" className="form-error" role="alert">
-                    {formErrors.confirmPassword}
-                  </span>
+                  <span className="form-error">{formErrors.confirmPassword}</span>
                 )}
               </div>
             )}
             
             {(formErrors.submit || error) && (
-              <div className="form-error submit-error" role="alert">
+              <div className="form-error submit-error">
                 {formErrors.submit || error}
               </div>
             )}
@@ -329,11 +462,7 @@ const App = () => {
               className="auth-submit"
               disabled={isSubmitting || loading}
             >
-              {isSubmitting ? (
-                <span>Procesando...</span>
-              ) : (
-                isRegisterMode ? t('auth.registerButton') : t('auth.loginButton')
-              )}
+              {isSubmitting ? 'Procesando...' : (isRegisterMode ? 'Registrarse' : 'Iniciar Sesión')}
             </button>
           </form>
           
@@ -365,13 +494,12 @@ const App = () => {
         </div>
       </div>
     );
-  }, [isLoginModalOpen, isRegisterMode, formData, formErrors, isSubmitting, error, loading, t, closeModal, handleFormSubmit, handleInputChange, switchToLogin, switchToRegister]);
+  }, [isLoginModalOpen, isRegisterMode, formData, formErrors, isSubmitting, error, loading, showPassword, showConfirmPassword, closeModal, handleFormSubmit, handleInputChange, switchToLogin, switchToRegister]);
 
   //===============================================
-  //🎨 RENDERIZADO PRINCIPAL CON AUTENTICACIÓN
+  //🎨 RENDERIZADO PRINCIPAL
   //===============================================
   
-  // Mostrar loading mientras se verifica la autenticación
   if (loading) {
     return (
       <div className="App">
@@ -405,42 +533,126 @@ const App = () => {
         isAuthenticated={isAuthenticated}
       />
       
-      {/* --------SISTEMA DE RUTAS CON PROTECCIÓN-------- */}
+      {/* --------SISTEMA DE RUTAS CON PROTECCIÓN Y PREVIEW-------- */}
       <Routes>
-        {/* Rutas públicas */}
+        {/* ========= RUTAS PÚBLICAS SIEMPRE DISPONIBLES ========= */}
         <Route path="/" element={<Home />} />
-        <Route path="/propiedades" element={<Properties />} />
-        <Route path="/experiencias" element={<Experiences />} />
-        <Route path="/servicios" element={<Services />} />
-        <Route path="/servicios-premium" element={<PremiumServices />} />
-        <Route path="/contacto" element={<Contact />} />
         
-        {/* Ruta protegida para usuarios logueados */}
-        {isAuthenticated && (
-          <Route path="/dashboard" element={<Dashboard user={user} />} />
+        {/* ========= RUTAS PREVIEW - Solo para usuarios NO logueados ========= */}
+        {!isAuthenticated && (
+          <>
+            <Route 
+              path="/propiedades-preview" 
+              element={<PropertiesPreview onLoginClick={openLoginModal} />} 
+            />
+            <Route 
+              path="/experiencias-preview" 
+              element={<ExperiencesPreview onLoginClick={openLoginModal} />} 
+            />
+            <Route 
+              path="/servicios-preview" 
+              element={<ServicesPreview onLoginClick={openLoginModal} />} 
+            />
+          </>
         )}
         
-        {/* Ruta 404 */}
-        <Route path="*" element={
-          <main className="page-container">
-            <section className="content-section active">
-              <h1 className="page-title">Página no encontrada</h1>
-              <p className="page-description">
-                La página que buscas no existe. 
-                <br />
-                <a href="/" style={{color: '#d4af37', textDecoration: 'underline'}}>
-                  Volver al inicio
-                </a>
-              </p>
-            </section>
-          </main>
-        } />
+        {/* ========= RUTAS COMPLETAS - Solo para usuarios logueados ========= */}
+        {isAuthenticated && (
+          <>
+            <Route 
+              path="/dashboard" 
+              element={
+                <ProtectedRoute>
+                  <Dashboard user={user} />
+                </ProtectedRoute>
+              } 
+            />
+            <Route path="/propiedades" element={<Properties />} />
+            <Route path="/experiencias" element={<Experiences />} />
+            <Route path="/servicios" element={<Services />} />
+            <Route path="/servicios-premium" element={<PremiumServices />} />
+            
+            {/* Redirecciones desde preview a rutas completas si está logueado */}
+            <Route path="/propiedades-preview" element={<Properties />} />
+            <Route path="/experiencias-preview" element={<Experiences />} />
+            <Route path="/servicios-preview" element={<PremiumServices />} />
+          </>
+        )}
+
+        {/* ========= RUTAS DE PROPIEDADES ESPECÍFICAS ========= */}
+        <Route 
+          path="/property/villa-lujo-santander" 
+          element={
+            isAuthenticated ? 
+              <PropertyDetail propertyId="villa_lujo_santander" category="services" /> :
+              <Navigate to="/preview/villa-lujo-santander" replace />
+          } 
+        />
+
+        <Route 
+          path="/property/apartamento-centro-santander" 
+          element={
+            isAuthenticated ? 
+              <PropertyDetail propertyId="apartamento_centro_santander" category="services" /> :
+              <Navigate to="/preview/apartamento-centro-santander" replace />
+          } 
+        />
+
+        <Route path="/property/:propertyId" element={<PropertyDetailRouter />} />
+
+        {/* ========= RUTAS DE PREVIEW PARA PROPIEDADES ESPECÍFICAS ========= */}
+        <Route path="/preview/villa-lujo-santander" element={<PropertyPreviewRouter />} />
+        <Route path="/preview/apartamento-centro-santander" element={<PropertyPreviewRouter />} />
+        <Route path="/preview/:propertyId" element={<PropertyPreviewRouter />} />
+
+        {/* ========= PÁGINAS LEGALES ========= */}
+        <Route 
+          path="/privacy" 
+          element={
+            <main className="page-container">
+              <section className="content-section active">
+                <h1 className="page-title">Política de Privacidad</h1>
+                <p className="page-description">Información sobre el tratamiento de datos personales.</p>
+              </section>
+            </main>
+          } 
+        />
+        <Route 
+          path="/terms" 
+          element={
+            <main className="page-container">
+              <section className="content-section active">
+                <h1 className="page-title">Términos y Condiciones</h1>
+                <p className="page-description">Condiciones de uso de la plataforma.</p>
+              </section>
+            </main>
+          } 
+        />
+        
+        {/* ========= RUTA 404 ========= */}
+        <Route 
+          path="*" 
+          element={
+            <main className="page-container">
+              <section className="content-section active">
+                <h1 className="page-title">Página no encontrada</h1>
+                <p className="page-description">
+                  La página que buscas no existe. 
+                  <br />
+                  <a href="/" style={{ color: '#d4af37', textDecoration: 'underline' }}>
+                    Volver al inicio
+                  </a>
+                </p>
+              </section>
+            </main>
+          } 
+        />
       </Routes>
 
-      {/* --------FOOTER-------- */}
+      {/* --------FOOTER CON TRADUCCIONES MODULARES-------- */}
       <Footer />
       
-      {/* --------MODAL DE AUTENTICACIÓN-------- */}
+      {/* --------MODAL DE AUTENTICACIÓN MEJORADO-------- */}
       {modalContent}
     </div>
   );

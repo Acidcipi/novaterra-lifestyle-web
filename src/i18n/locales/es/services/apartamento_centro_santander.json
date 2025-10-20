@@ -1,0 +1,94 @@
+{
+  "property": {
+    "id": "ACS-002",
+    "title": "Apartamento Moderno Centro Histórico",
+    "subtitle": "Elegancia urbana en pleno corazón de Santander",
+    "short_description": "Sofisticado apartamento de 120m² totalmente reformado",
+    "full_description": "Descubre este excepcional apartamento ubicado en el corazón histórico de Santander. Completamente reformado en 2024, combina el encanto de la arquitectura tradicional con las comodidades más modernas. Sus 120m² están distribuidos de forma inteligente para maximizar la luz natural y crear espacios amplios y funcionales. Ideal tanto como residencia permanente o como inversión de alquiler turístico de lujo."
+  },
+  "specifications": {
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "guest_bathroom": 0,
+    "size_built": "120 m²",
+    "size_plot": "N/A",
+    "floors": 1,
+    "year_built": "1890",
+    "year_renovated": "2024",
+    "orientation": "Sur-Oeste",
+    "floor_level": "2º sin ascensor"
+  },
+  "features": {
+    "main": [
+      "Totalmente reformado",
+      "Techos altos originales",
+      "Balcón francés",
+      "Suelos de parquet roble",
+      "Cocina americana integrada",
+      "Aire acondicionado"
+    ],
+    "interior": [
+      "Cocina Santos equipada",
+      "Electrodomésticos Bosch",
+      "Armarios empotrados",
+      "Baño principal con ducha lluvia",
+      "Ventanas Climalit",
+      "Iluminación LED"
+    ],
+          "building": [
+      "Edificio histórico rehabilitado",
+      "Fachada protegida",
+      "Portal restaurado",
+      "Buzones inteligentes",
+      "Puerta de seguridad"
+    ]
+  },
+  "location": {
+    "area": "Casco Histórico",
+    "city": "Santander",
+    "province": "Cantabria",
+    "postal_code": "39001",
+    "beach_distance": "800m",
+    "city_center_distance": "En el centro",
+    "airport_distance": "8 km",
+    "nearby": [
+      "Catedral de Santander - 100m",
+      "Mercado de la Esperanza - 200m",
+      "Plaza Porticada - 300m",
+      "Puerto deportivo - 500m",
+      "Playa del Camello - 800m"
+    ]
+  },
+  "price": {
+    "sale": "485.000",
+    "currency": "€",
+    "price_per_m2": "4.042",
+    "community_fees": "85",
+    "property_tax": "1.250"
+  },
+  "contact": {
+    "agent_name": "Carlos Ruiz",
+    "agent_title": "Especialista en Propiedades Urbanas",
+    "phone": "+34 942 654 321",
+    "email": "carlos@novaterra-lifestyle.com",
+    "languages": ["Español", "Inglés", "Alemán"]
+  },
+  "gallery": {
+    "images": 18,
+    "virtual_tour": true,
+    "drone_photos": false,
+    "floor_plans": true
+  },
+  "legal": {
+    "energy_rating": "B",
+    "reference": "ACS-002-2025",
+    "last_update": "10/01/2025",
+    "status": "Disponible"
+  },
+  "rental_potential": {
+    "monthly_rent": "1.800",
+    "annual_yield": "4.2%",
+    "tourist_license": "Disponible",
+    "management_service": "Incluido"
+  }
+}

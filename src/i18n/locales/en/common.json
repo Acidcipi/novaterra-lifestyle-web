@@ -1,0 +1,67 @@
+{
+  "header": {
+    "nav": {
+      "home": "Home",
+      "properties": "Properties",
+      "services": "Services",
+      "about": "About Us",
+      "contact": "Contact",
+      "dashboard": "Dashboard"
+    },
+    "auth": {
+      "login": "Sign In",
+      "register": "Sign Up",
+      "logout": "Sign Out",
+      "profile": "My Profile"
+    },
+    "language": "Language"
+  },
+  "footer": {
+    "company": {
+      "name": "Novaterra Lifestyle",
+      "tagline": "Your ideal home in Cantabria",
+      "description": "Specialists in premium properties on the Cantabrian coast"
+    },
+    "contact": {
+      "title": "Contact",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address"
+    },
+    "links": {
+      "legal": "Legal",
+      "privacy": "Privacy",
+      "cookies": "Cookies",
+      "terms": "Terms"
+    },
+    "social": {
+      "title": "Follow Us",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "linkedin": "LinkedIn"
+    },
+    "rights": "© 2025 Novaterra Lifestyle. All rights reserved."
+  },
+  "buttons": {
+    "see_more": "See More",
+    "contact_us": "Contact Us",
+    "view_details": "View Details",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm"
+  },
+  "status": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information"
+  },
+  "currency": "€",
+  "preview_label": "🔒 PREVIEW"
+}

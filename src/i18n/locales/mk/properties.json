@@ -1,0 +1,83 @@
+{
+  "general": {
+    "title": "Премиум недвижности",
+    "subtitle": "Откријте го вашиот идеален дом во Кантабрија",
+    "no_results": "Не се најдени недвижности",
+    "load_more": "Вчитај повеќе недвижности"
+  },
+  "filters": {
+    "title": "Филтри",
+    "location": "Локација",
+    "property_type": "Тип на недвижност",
+    "price_range": "Ценовен опсег",
+    "bedrooms": "Спални",
+    "bathrooms": "Бањи",
+    "size": "Големина (м²)",
+    "features": "Карактеристики",
+    "clear_filters": "Исчисти филтри",
+    "apply_filters": "Примени филтри"
+  },
+  "property_types": {
+    "apartment": "Стан",
+    "house": "Куќа",
+    "villa": "Вила",
+    "penthouse": "Пентхаус",
+    "townhouse": "Градска куќа",
+    "studio": "Студио",
+    "duplex": "Дуплекс"
+  },
+  "locations": {
+    "santander": "Сантандер",
+    "castro_urdiales": "Кастро Урдијалес",
+    "laredo": "Ларедо",
+    "comillas": "Комијас",
+    "santillana": "Сантијана дел Мар",
+    "suances": "Суансес",
+    "noja": "Ноха"
+  },
+  "features": {
+    "sea_view": "Поглед кон море",
+    "garden": "Градина",
+    "terrace": "Тераса",
+    "garage": "Гаража",
+    "pool": "Базен",
+    "elevator": "Лифт",
+    "air_conditioning": "Клима",
+    "heating": "Греење",
+    "fireplace": "Камин",
+    "storage": "Остава"
+  },
+  "card": {
+    "bedrooms": "спал.",
+    "bathrooms": "бањи",
+    "size": "м²",
+    "price_from": "од",
+    "contact": "Контакт",
+    "details": "Види детали",
+    "favorite": "Додај во омилени",
+    "share": "Сподели",
+    "new": "НОВО",
+    "featured": "ИСТАКНАТО"
+  },
+  "detail": {
+    "gallery": "Галерија",
+    "description": "Опис",
+    "features": "Карактеристики",
+    "location": "Локација",
+    "contact_form": "Контакт форма",
+    "similar_properties": "Слични недвижности",
+    "virtual_tour": "Виртуелна тура",
+    "floor_plan": "План на кат",
+    "energy_certificate": "Енергетски сертификат"
+  },
+  "contact_form": {
+    "title": "Барај информации",
+    "name": "Полно име",
+    "email": "Е-пошта",
+    "phone": "Телефон",
+    "message": "Порака",
+    "send": "Испрати барање",
+    "success": "Барањето е успешно испратено",
+    "error": "Грешка при испраќање на барањето"
+  }
+}

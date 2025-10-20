@@ -1,0 +1,87 @@
+{
+  "property": {
+    "id": "VLS-001",
+    "title": "Villa de Lujo Frente al Mar",
+    "subtitle": "Exclusiva propiedad con vistas panorámicas",
+    "short_description": "Espectacular villa de 450m² con acceso directo a la playa",
+    "full_description": "Esta excepcional villa de lujo se encuentra en primera línea de mar en Santander, ofreciendo vistas panorámicas inigualables de la bahía. Con 450m² construidos en una parcela de 800m², la propiedad combina elegancia contemporánea con comodidades de primer nivel. Diseñada para el máximo confort y privacidad, cuenta con amplios espacios abiertos, acabados de alta calidad y tecnología domótica integrada."
+  },
+  "specifications": {
+    "bedrooms": 5,
+    "bathrooms": 4,
+    "guest_bathroom": 1,
+    "size_built": "450 m²",
+    "size_plot": "800 m²",
+    "floors": 3,
+    "year_built": "2023",
+    "orientation": "Sur-Este"
+  },
+  "features": {
+    "main": [
+      "Vista panorámica al mar",
+      "Acceso directo a la playa",
+      "Piscina infinity",
+      "Jardín paisajístico",
+      "Garaje para 3 coches",
+      "Bodega climatizada"
+    ],
+    "interior": [
+      "Suelos de mármol Carrara",
+      "Cocina alemana equipada",
+      "Sistema domótico",
+      "Chimenea de diseño",
+      "Vestidor principal",
+      "Ascensor privado"
+    ],
+    "exterior": [
+      "Terraza de 100m²",
+      "Zona chill-out",
+      "Barbacoa exterior",
+      "Sistema de riego automático",
+      "Iluminación LED",
+      "Pérgola motorizada"
+    ]
+  },
+  "location": {
+    "area": "El Sardinero",
+    "city": "Santander",
+    "province": "Cantabria",
+    "postal_code": "39005",
+    "beach_distance": "Acceso directo",
+    "city_center_distance": "5 km",
+    "airport_distance": "12 km",
+    "nearby": [
+      "Casino del Sardinero - 200m",
+      "Hotel Real - 300m",
+      "Palacio de Festivales - 1km",
+      "Centro Botín - 4km",
+      "Universidad de Cantabria - 6km"
+    ]
+  },
+  "price": {
+    "sale": "2.850.000",
+    "currency": "€",
+    "price_per_m2": "6.333",
+    "community_fees": "280",
+    "property_tax": "3.200"
+  },
+  "contact": {
+    "agent_name": "María González",
+    "agent_title": "Especialista en Propiedades Premium",
+    "phone": "+34 942 123 456",
+    "email": "maria@novaterra-lifestyle.com",
+    "languages": ["Español", "Inglés", "Francés"]
+  },
+  "gallery": {
+    "images": 24,
+    "virtual_tour": true,
+    "drone_photos": true,
+    "floor_plans": true
+  },
+  "legal": {
+    "energy_rating": "A",
+    "reference": "VLS-001-2025",
+    "last_update": "15/01/2025",
+    "status": "Disponible"
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "general": {
+    "title": "Propiedades Premium",
+    "subtitle": "Descubre tu hogar ideal en Cantabria",
+    "no_results": "No se encontraron propiedades",
+    "load_more": "Cargar más propiedades"
+  },
+  "filters": {
+    "title": "Filtros",
+    "location": "Ubicación",
+    "property_type": "Tipo de Propiedad",
+    "price_range": "Rango de Precio",
+    "bedrooms": "Habitaciones",
+    "bathrooms": "Baños",
+    "size": "Tamaño (m²)",
+    "features": "Características",
+    "clear_filters": "Limpiar Filtros",
+    "apply_filters": "Aplicar Filtros"
+  },
+  "property_types": {
+    "apartment": "Apartamento",
+    "house": "Casa",
+    "villa": "Villa",
+    "penthouse": "Ático",
+    "townhouse": "Casa Adosada",
+    "studio": "Estudio",
+    "duplex": "Dúplex"
+  },
+  "locations": {
+    "santander": "Santander",
+    "castro_urdiales": "Castro Urdiales",
+    "laredo": "Laredo",
+    "comillas": "Comillas",
+    "santillana": "Santillana del Mar",
+    "suances": "Suances",
+    "noja": "Noja"
+  },
+  "features": {
+    "sea_view": "Vista al Mar",
+    "garden": "Jardín",
+    "terrace": "Terraza",
+    "garage": "Garaje",
+    "pool": "Piscina",
+    "elevator": "Ascensor",
+    "air_conditioning": "Aire Acondicionado",
+    "heating": "Calefacción",
+    "fireplace": "Chimenea",
+    "storage": "Trastero"
+  },
+  "card": {
+    "bedrooms": "hab.",
+    "bathrooms": "baños",
+    "size": "m²",
+    "price_from": "desde",
+    "contact": "Contactar",
+    "details": "Ver Detalles",
+    "favorite": "Añadir a Favoritos",
+    "share": "Compartir",
+    "new": "NUEVO",
+    "featured": "DESTACADO"
+  },
+  "detail": {
+    "gallery": "Galería",
+    "description": "Descripción",
+    "features": "Características",
+    "location": "Ubicación",
+    "contact_form": "Formulario de Contacto",
+    "similar_properties": "Propiedades Similares",
+    "virtual_tour": "Tour Virtual",
+    "floor_plan": "Plano",
+    "energy_certificate": "Certificado Energético"
+  },
+  "contact_form": {
+    "title": "Solicitar Información",
+    "name": "Nombre Completo",
+    "email": "Correo Electrónico",
+    "phone": "Teléfono",
+    "message": "Mensaje",
+    "send": "Enviar Consulta",
+    "success": "Consulta enviada correctamente",
+    "error": "Error al enviar la consulta"
+  },
+  "imageAlt": "Imagen de la propiedad",
+  "imageSoon": "Imagen disponible pronto",
+  "viewDetails": "Ver Detalles"
+}

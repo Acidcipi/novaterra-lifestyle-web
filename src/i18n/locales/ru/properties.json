@@ -1,0 +1,83 @@
+{
+  "general": {
+    "title": "Премиум недвижимость",
+    "subtitle": "Найдите свой идеальный дом в Кантабрии",
+    "no_results": "Недвижимость не найдена",
+    "load_more": "Загрузить еще объекты"
+  },
+  "filters": {
+    "title": "Фильтры",
+    "location": "Местоположение",
+    "property_type": "Тип недвижимости",
+    "price_range": "Ценовой диапазон",
+    "bedrooms": "Спальни",
+    "bathrooms": "Ванные",
+    "size": "Размер (м²)",
+    "features": "Особенности",
+    "clear_filters": "Очистить фильтры",
+    "apply_filters": "Применить фильтры"
+  },
+  "property_types": {
+    "apartment": "Квартира",
+    "house": "Дом",
+    "villa": "Вилла",
+    "penthouse": "Пентхаус",
+    "townhouse": "Таунхаус",
+    "studio": "Студия",
+    "duplex": "Дуплекс"
+  },
+  "locations": {
+    "santander": "Сантандер",
+    "castro_urdiales": "Кастро-Урдиалес",
+    "laredo": "Ларедо",
+    "comillas": "Комильяс",
+    "santillana": "Сантильяна-дель-Мар",
+    "suances": "Суансес",
+    "noja": "Ноха"
+  },
+  "features": {
+    "sea_view": "Вид на море",
+    "garden": "Сад",
+    "terrace": "Терраса",
+    "garage": "Гараж",
+    "pool": "Бассейн",
+    "elevator": "Лифт",
+    "air_conditioning": "Кондиционер",
+    "heating": "Отопление",
+    "fireplace": "Камин",
+    "storage": "Кладовая"
+  },
+  "card": {
+    "bedrooms": "спал.",
+    "bathrooms": "ван.",
+    "size": "м²",
+    "price_from": "от",
+    "contact": "Связаться",
+    "details": "Подробности",
+    "favorite": "В избранное",
+    "share": "Поделиться",
+    "new": "НОВОЕ",
+    "featured": "РЕКОМЕНДУЕМОЕ"
+  },
+  "detail": {
+    "gallery": "Галерея",
+    "description": "Описание",
+    "features": "Особенности",
+    "location": "Местоположение",
+    "contact_form": "Форма связи",
+    "similar_properties": "Похожие объекты",
+    "virtual_tour": "Виртуальный тур",
+    "floor_plan": "План этажа",
+    "energy_certificate": "Энергетический сертификат"
+  },
+  "contact_form": {
+    "title": "Запросить информацию",
+    "name": "Полное имя",
+    "email": "Электронная почта",
+    "phone": "Телефон",
+    "message": "Сообщение",
+    "send": "Отправить запрос",
+    "success": "Запрос отправлен успешно",
+    "error": "Ошибка отправки запроса"
+  }
+}

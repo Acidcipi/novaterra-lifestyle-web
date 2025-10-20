@@ -2,7 +2,8 @@
 //🔥 CONFIGURACIÓN FIREBASE - src/config/firebase.js
 //===============================================
 import { initializeApp } from 'firebase/app';
-import { getAnalytics } from "firebase/analytics";
+// ❌ QUITAMOS ANALYTICS QUE CAUSABA EL ERROR
+// import { getAnalytics } from "firebase/analytics";
 import { 
   getAuth, 
   createUserWithEmailAndPassword,
