@@ -1,27 +1,13 @@
-plugins = []
-headers = []
-redirects = []
+[build]
+  command = "npm run build"
+  publish = "dist"
 
 [functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
 
-[functions."*"]
-
-[build]
-publish = "C:\\Programacion\\novaterra-lifestyle-web\\dist"
-publishOrigin = "ui"
-commandOrigin = "ui"
-command = "npm run build"
-
-[build.environment]
-
-[build.processing]
-
-[build.processing.css]
-
-[build.processing.html]
-
-[build.processing.images]
-
-[build.processing.js]
-
-[build.services]
+# Redirección necesaria para React Router
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
