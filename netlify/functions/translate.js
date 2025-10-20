@@ -1,36 +1,54 @@
 // netlify/functions/translate.js
-import fetch from 'node-fetch';
+// Traducción gratuita con Apertium (sin node-fetch necesario)
 
 export const handler = async (event) => {
   try {
-    const { text, target, source = 'es' } = JSON.parse(event.body || '{}');
+    if (event.httpMethod !== "POST") {
+      return {
+        statusCode: 405,
+        body: JSON.stringify({ error: "Method Not Allowed" }),
+      };
+    }
+
+    const { text, target, source = "es" } = JSON.parse(event.body || "{}");
     if (!text || !target) {
-      return { statusCode: 400, body: JSON.stringify({ error: 'Missing text or target' }) };
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: "Missing text or target" }),
+      };
     }
 
-    const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY;
-    const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
+    const apiUrl = "https://apy.projectjj.com/"; // Servidor público Apertium
+    const items = Array.isArray(text) ? text : [text];
+    const results = [];
 
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        q: Array.isArray(text) ? text : [text],
-        target,
-        source
-      })
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      return { statusCode: res.status, body: JSON.stringify(data) };
+    // Usamos fetch nativo de Node 18+, no hace falta node-fetch
+    for (const phrase of items) {
+      const params = new URLSearchParams({
+        q: phrase,
+        langpair: `${source}|${target}`,
+      });
+
+      const response = await fetch(`${apiUrl}translate?${params.toString()}`);
+      if (!response.ok) {
+        results.push(phrase); // fallback sin traducir
+        continue;
+      }
+
+      const data = await response.json();
+      results.push(data.responseData?.translatedText || phrase);
     }
 
-    const translations = (data.data?.translations || []).map(t => t.translatedText);
     return {
       statusCode: 200,
-      body: JSON.stringify({ translations })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ translations: results }),
     };
-  } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+  } catch (err) {
+    console.error("Apertium translate error:", err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: err.message }),
+    };
   }
 };
