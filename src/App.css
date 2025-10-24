@@ -1416,3 +1416,101 @@ body {
     font-size: 1.5rem;
   }
 }
+
+/*===============================================*/
+/* CORRECCIONES DE ESTILOS - BOTONES Y ALINEACIÓN */
+/*===============================================*/
+
+/* Arreglar alineación del header */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 100%;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  color: #d4af37;
+  font-weight: 500;
+}
+
+/* Botones con estilo dorado/negro */
+.cta-button,
+.register-button,
+.card-button {
+  background: linear-gradient(135deg, #D4AF37 0%, #F4E8C1 100%);
+  color: #1a1a1a;
+  border: 2px solid #D4AF37;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.cta-button:hover,
+.register-button:hover,
+.card-button:hover {
+  background: linear-gradient(135deg, #F4E8C1 0%, #D4AF37 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+}
+
+/* Asegurar que los botones en property detail tengan el estilo correcto */
+.property-detail-content .cta-button,
+.property-detail-content .register-button {
+  background: linear-gradient(135deg, #D4AF37 0%, #F4E8C1 100%) !important;
+  color: #1a1a1a !important;
+}
+
+/* Grid de propiedades/servicios */
+.properties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.property-card {
+  background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+  border: 2px solid #d4af37;
+  border-radius: 12px;
+  padding: 2rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.property-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+  border-color: #f4d03f;
+}
+
+.property-card-content h3 {
+  color: #d4af37;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.property-card-content p {
+  color: #ffffff;
+  opacity: 0.8;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+/* Estado vacío */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #d4af37;
+  font-size: 1.2rem;
+}

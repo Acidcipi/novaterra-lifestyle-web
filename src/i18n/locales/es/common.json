@@ -4,6 +4,7 @@
       "home": "Inicio",
       "properties": "Propiedades",
       "services": "Servicios",
+      "experiences": "Experiencias",
       "about": "Nosotros",
       "contact": "Contacto",
       "dashboard": "Panel"
@@ -53,7 +54,8 @@
     "cancel": "Cancelar",
     "edit": "Editar",
     "delete": "Eliminar",
-    "confirm": "Confirmar"
+    "confirm": "Confirmar",
+    "register_to_request": "Regístrate para solicitar"
   },
   "status": {
     "loading": "Cargando...",
@@ -63,5 +65,6 @@
     "info": "Información"
   },
   "currency": "€",
-  "preview_label": "🔒 VISTA PREVIA"
+  "preview_label": "🔒 VISTA PREVIA",
+  "autoTranslated": "Traducido automáticamente"
 }
