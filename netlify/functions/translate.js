@@ -1,54 +1,59 @@
 // netlify/functions/translate.js
-// Traducción gratuita con Apertium (sin node-fetch necesario)
+import fetch from 'node-fetch';
 
-export const handler = async (event) => {
+export async function handler(event) {
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: 'Method Not Allowed' };
+  }
+
   try {
-    if (event.httpMethod !== "POST") {
-      return {
-        statusCode: 405,
-        body: JSON.stringify({ error: "Method Not Allowed" }),
-      };
-    }
-
-    const { text, target, source = "es" } = JSON.parse(event.body || "{}");
+    const { text, target, source = 'es' } = JSON.parse(event.body);
+    
     if (!text || !target) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: "Missing text or target" }),
+        body: JSON.stringify({ error: 'Missing text or target language' })
       };
     }
 
-    const apiUrl = "https://apy.projectjj.com/"; // Servidor público Apertium
-    const items = Array.isArray(text) ? text : [text];
-    const results = [];
+    // Array de textos para traducir
+    const textsToTranslate = Array.isArray(text) ? text : [text];
+    
+    // Usar LibreTranslate (API gratuita) o Google Translate API
+    const translations = await Promise.all(
+      textsToTranslate.map(async (t) => {
+        // Opción 1: LibreTranslate (GRATIS - recomendado para empezar)
+        const response = await fetch('https://libretranslate.de/translate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            q: t,
+            source: source,
+            target: target,
+            format: 'text'
+          })
+        });
 
-    // Usamos fetch nativo de Node 18+, no hace falta node-fetch
-    for (const phrase of items) {
-      const params = new URLSearchParams({
-        q: phrase,
-        langpair: `${source}|${target}`,
-      });
+        if (!response.ok) {
+          throw new Error(`Translation API error: ${response.statusText}`);
+        }
 
-      const response = await fetch(`${apiUrl}translate?${params.toString()}`);
-      if (!response.ok) {
-        results.push(phrase); // fallback sin traducir
-        continue;
-      }
-
-      const data = await response.json();
-      results.push(data.responseData?.translatedText || phrase);
-    }
+        const data = await response.json();
+        return data.translatedText;
+      })
+    );
 
     return {
       statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ translations: results }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ translations })
     };
-  } catch (err) {
-    console.error("Apertium translate error:", err);
+
+  } catch (error) {
+    console.error('Translation error:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message }),
+      body: JSON.stringify({ error: error.message })
     };
   }
-};
+}

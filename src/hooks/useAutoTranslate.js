@@ -1,127 +1,186 @@
-import { useEffect, useMemo, useState } from 'react';
-import { translateTexts } from '../utils/aiTranslate';
-import { getCachedPropertyTranslation, setCachedPropertyTranslation } from '../services/translationCache';
+//===============================================
+//🌍 HOOK EFICIENTE PARA TRADUCCIÓN AUTOMÁTICA DE PÁGINAS
+//===============================================
 
-// Util: mezcla respetando campos manuales si existen
-function mergeWithManualTranslations(property, lang, fields) {
-  const manual = property?.translations?.[lang] || {};
-  return {
-    title: manual.title ?? fields.title,
-    description: manual.description ?? fields.description,
-    features: Array.isArray(manual.features) ? manual.features : fields.features,
-    location: manual.location ?? fields.location,
-    neighborhood: manual.neighborhood ?? fields.neighborhood,
-    // Si viene manual, no es auto traducido
-    _autoTranslated: false
-  };
-}
+import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
-export function useAutoTranslateProperty(property, targetLang = 'es') {
-  const [result, setResult] = useState(property);
-  const [status, setStatus] = useState('idle'); // idle | loading | ready | error
+/**
+ * Hook optimizado que traduce TODO el contenido de una vez
+ * Guarda en localStorage para evitar re-traducciones
+ */
+export function usePageTranslation(contentES) {
+  const { i18n } = useTranslation();
+  const [content, setContent] = useState(contentES);
+  const [loading, setLoading] = useState(false);
+  const currentLang = i18n.language;
 
-  const base = useMemo(() => {
-    if (!property) return null;
-    return {
-      id: property.id || property.slug || property.code || 'unknown',
-      title: property.title || '',
-      description: property.description || '',
-      features: Array.isArray(property.features) ? property.features : [],
-      location: property.location || '',
-      neighborhood: property.neighborhood || ''
-    };
-  }, [property]);
+  //===============================================
+  //📦 CACH/E EN LOCALSTORAGE
+  //===============================================
+  const getCacheKey = useCallback((lang) => {
+    const contentHash = JSON.stringify(contentES).length; // Simple hash
+    return `translation_${lang}_${contentHash}`;
+  }, [contentES]);
 
-  useEffect(() => {
-    let cancelled = false;
-    async function run() {
-      if (!property || !base) return;
-      if (targetLang === 'es') {
-        setResult(property);
-        setStatus('ready');
-        return;
+  const getCachedTranslation = useCallback((lang) => {
+    try {
+      const cached = localStorage.getItem(getCacheKey(lang));
+      if (cached) {
+        const { content: cachedContent, timestamp } = JSON.parse(cached);
+        // Cache válido por 7 días
+        if (Date.now() - timestamp < 7 * 24 * 60 * 60 * 1000) {
+          return cachedContent;
+        }
       }
+    } catch (e) {
+      console.error('Cache read error:', e);
+    }
+    return null;
+  }, [getCacheKey]);
 
-      // 1) Si hay traducción manual para este idioma, úsala y no llames IA
-      const manualMerged = mergeWithManualTranslations(property, targetLang, base);
-      const hasAnyManual =
-        property?.translations?.[targetLang] &&
-        Object.values(property.translations[targetLang]).some(v => v && String(v).trim() !== '');
+  const setCachedTranslation = useCallback((lang, translatedContent) => {
+    try {
+      localStorage.setItem(
+        getCacheKey(lang),
+        JSON.stringify({
+          content: translatedContent,
+          timestamp: Date.now()
+        })
+      );
+    } catch (e) {
+      console.error('Cache write error:', e);
+    }
+  }, [getCacheKey]);
 
-      if (hasAnyManual) {
-        const out = { ...property, ...manualMerged, _autoTranslated: false };
-        if (!cancelled) {
-          setResult(out);
-          setStatus('ready');
-        }
-        return;
+  //===============================================
+  //🔄 FUNCIÓN RECURSIVA PARA TRADUCIR OBJETOS
+  //===============================================
+  const translateObject = useCallback(async (obj, lang) => {
+    if (typeof obj === 'string') {
+      return obj; // Se traduce después en batch
+    }
+
+    if (Array.isArray(obj)) {
+      return obj; // Se traduce después en batch
+    }
+
+    if (typeof obj === 'object' && obj !== null) {
+      const result = {};
+      for (const key in obj) {
+        result[key] = await translateObject(obj[key], lang);
       }
+      return result;
+    }
 
-      setStatus('loading');
+    return obj;
+  }, []);
 
-      // 2) Cache en Firestore
-      try {
-        const cached = await getCachedPropertyTranslation(base.id, targetLang);
-        if (cached) {
-          if (!cancelled) {
-            setResult(cached);
-            setStatus('ready');
-          }
-          return;
-        }
-      } catch (e) {
-        // Si falla cache, seguimos con IA
-        console.warn('Cache read failed', e);
-      }
-
-      // 3) Traducir con IA
-      try {
-        const batch = [
-          base.title,
-          base.description,
-          ...(base.features || []),
-          base.location,
-          base.neighborhood
-        ];
-        const out = await translateTexts(batch, targetLang, 'es');
-
-        const [tTitle, tDesc, ...rest] = out;
-        const tFeatures = rest.slice(0, base.features.length);
-        const tLocation = rest[base.features.length] || '';
-        const tNeighborhood = rest[base.features.length + 1] || '';
-
-        const translated = {
-          ...property,
-          title: tTitle,
-          description: tDesc,
-          features: tFeatures,
-          location: tLocation,
-          neighborhood: tNeighborhood,
-          _autoTranslated: true
-        };
-
-        // 4) Guardar en cache
-        try {
-          await setCachedPropertyTranslation(base.id, targetLang, translated);
-        } catch (e) {
-          console.warn('Cache write failed', e);
-        }
-
-        if (!cancelled) {
-          setResult(translated);
-          setStatus('ready');
-        }
-      } catch (e) {
-        console.error(e);
-        if (!cancelled) {
-          setResult(property); // fallback ES
-          setStatus('error');
-        }
+  //===============================================
+  //📝 EXTRAER TODOS LOS TEXTOS PARA TRADUCIR
+  //===============================================
+  const extractTexts = useCallback((obj, texts = [], paths = []) => {
+    if (typeof obj === 'string') {
+      texts.push(obj);
+      paths.push(null);
+    } else if (Array.isArray(obj)) {
+      obj.forEach((item, index) => {
+        extractTexts(item, texts, paths);
+      });
+    } else if (typeof obj === 'object' && obj !== null) {
+      for (const key in obj) {
+        extractTexts(obj[key], texts, paths);
       }
     }
-    run();
-    return () => { cancelled = true; };
-  }, [property, base, targetLang]);
+    return texts;
+  }, []);
 
-  return { data: result, status };
+  //===============================================
+  //🔄 APLICAR TRADUCCIONES AL OBJETO
+  //===============================================
+  const applyTranslations = useCallback((obj, translations, index = { value: 0 }) => {
+    if (typeof obj === 'string') {
+      return translations[index.value++] || obj;
+    }
+
+    if (Array.isArray(obj)) {
+      return obj.map(item => applyTranslations(item, translations, index));
+    }
+
+    if (typeof obj === 'object' && obj !== null) {
+      const result = {};
+      for (const key in obj) {
+        result[key] = applyTranslations(obj[key], translations, index);
+      }
+      return result;
+    }
+
+    return obj;
+  }, []);
+
+  //===============================================
+  //⚡ EFECTO PRINCIPAL DE TRADUCCIÓN
+  //===============================================
+  useEffect(() => {
+    // Si es español, usar contenido original
+    if (currentLang === 'es') {
+      setContent(contentES);
+      setLoading(false);
+      return;
+    }
+
+    // Buscar en caché
+    const cached = getCachedTranslation(currentLang);
+    if (cached) {
+      setContent(cached);
+      setLoading(false);
+      return;
+    }
+
+    // Traducir
+    const translateContent = async () => {
+      setLoading(true);
+
+      try {
+        // Extraer todos los textos
+        const allTexts = extractTexts(contentES);
+
+        // Traducir todo de una vez
+        const response = await fetch('/.netlify/functions/translate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text: allTexts,
+            target: currentLang,
+            source: 'es'
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('Translation failed');
+        }
+
+        const data = await response.json();
+        
+        // Aplicar traducciones al objeto original
+        const translatedContent = applyTranslations(contentES, data.translations);
+
+        // Guardar en caché
+        setCachedTranslation(currentLang, translatedContent);
+
+        // Actualizar estado
+        setContent(translatedContent);
+
+      } catch (error) {
+        console.error('Translation error:', error);
+        setContent(contentES); // Fallback al español
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    translateContent();
+  }, [currentLang, contentES, getCachedTranslation, setCachedTranslation, extractTexts, applyTranslations]);
+
+  return { content, loading, language: currentLang };
 }
