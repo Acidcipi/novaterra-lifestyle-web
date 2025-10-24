@@ -1,22 +1,28 @@
 //===============================================
 //🔥 CONFIGURACIÓN FIREBASE - src/config/firebase.js
 //===============================================
+
 import { initializeApp } from 'firebase/app';
-// ❌ QUITAMOS ANALYTICS QUE CAUSABA EL ERROR
-// import { getAnalytics } from "firebase/analytics";
-import { 
-  getAuth, 
+import {
+  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   sendPasswordResetEmail,
   updateProfile,
-  onAuthStateChanged 
+  onAuthStateChanged
 } from 'firebase/auth';
 
+// ✅ AÑADIMOS FIRESTORE
+import { getFirestore } from 'firebase/firestore';
+
+// ✅ AÑADIMOS STORAGE (por si acaso lo necesitas)
+import { getStorage } from 'firebase/storage';
+
 //===============================================
-//⚙️ CONFIGURACIÓN 
+//⚙️ CONFIGURACIÓN
 //===============================================
+
 const firebaseConfig = {
   apiKey: "AIzaSyCn0nFz0vYgixbS_bGdPs8l33car5MHJcA",
   authDomain: "novaterra-lifestyle.firebaseapp.com",
@@ -30,8 +36,13 @@ const firebaseConfig = {
 //===============================================
 //🔧 INICIALIZACIÓN
 //===============================================
+
 const app = initializeApp(firebaseConfig);
+
+// Exportar servicios
 export const auth = getAuth(app);
+export const db = getFirestore(app);  // ✅ ESTO FALTABA
+export const storage = getStorage(app);  // ✅ AÑADIDO POR SI ACASO
 
 //===============================================
 //🛡️ SERVICIOS DE AUTENTICACIÓN SEGUROS
@@ -40,37 +51,30 @@ export const auth = getAuth(app);
 // Registro de usuario
 export const registerUser = async (email, password, displayName) => {
   try {
-    // Validaciones adicionales
     if (!email || !password) {
       throw new Error('Email and password are required');
     }
-    
+
     if (password.length < 8) {
       throw new Error('Password must be at least 8 characters');
     }
-    
-    // Crear usuario
+
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    
-    // Actualizar perfil con nombre
+
     if (displayName) {
       await updateProfile(userCredential.user, {
         displayName: displayName
       });
     }
-    
+
     return {
       success: true,
       user: userCredential.user,
       message: 'Usuario registrado exitosamente'
     };
-    
   } catch (error) {
     console.error('Error en registro:', error);
-    
-    // Manejo de errores específicos
     let errorMessage = 'Error desconocido';
-    
     switch (error.code) {
       case 'auth/email-already-in-use':
         errorMessage = 'Este email ya está registrado';
@@ -87,7 +91,7 @@ export const registerUser = async (email, password, displayName) => {
       default:
         errorMessage = error.message;
     }
-    
+
     return {
       success: false,
       error: errorMessage
@@ -101,20 +105,16 @@ export const loginUser = async (email, password) => {
     if (!email || !password) {
       throw new Error('Email and password are required');
     }
-    
+
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    
     return {
       success: true,
       user: userCredential.user,
       message: 'Login exitoso'
     };
-    
   } catch (error) {
     console.error('Error en login:', error);
-    
     let errorMessage = 'Error desconocido';
-    
     switch (error.code) {
       case 'auth/user-not-found':
         errorMessage = 'Usuario no encontrado';
@@ -134,7 +134,7 @@ export const loginUser = async (email, password) => {
       default:
         errorMessage = error.message;
     }
-    
+
     return {
       success: false,
       error: errorMessage
@@ -165,19 +165,15 @@ export const resetPassword = async (email) => {
     if (!email) {
       throw new Error('Email is required');
     }
-    
+
     await sendPasswordResetEmail(auth, email);
-    
     return {
       success: true,
       message: 'Email de recuperación enviado'
     };
-    
   } catch (error) {
     console.error('Error en recuperación:', error);
-    
     let errorMessage = 'Error desconocido';
-    
     switch (error.code) {
       case 'auth/user-not-found':
         errorMessage = 'Usuario no encontrado';
@@ -188,7 +184,7 @@ export const resetPassword = async (email) => {
       default:
         errorMessage = error.message;
     }
-    
+
     return {
       success: false,
       error: errorMessage
