@@ -280,13 +280,10 @@ export default function Header({ onLoginClick, onLogout, isAuthenticated }) {
               {showExperiencesMenu && (
                 <div className="dropdown-menu">
                   <Link to="/experiences" className="dropdown-item" onClick={() => setShowExperiencesMenu(false)}>
-                    🌟 Todas las Experiencias
-                  </Link>
-                  <Link to="/experiences-preview" className="dropdown-item" onClick={() => setShowExperiencesMenu(false)}>
-                    👁️ Vista Previa
+                    {t('Basicas')}
                   </Link>
                   <Link to="/premium-services" className="dropdown-item" onClick={() => setShowExperiencesMenu(false)}>
-                    💎 Servicios Premium
+                    {t('VIP')}
                   </Link>
                 </div>
               )}
