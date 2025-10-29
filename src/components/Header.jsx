@@ -353,7 +353,7 @@ export default function Header({ onLoginClick, onLogout, isAuthenticated }) {
               </div>
             ) : (
               <button onClick={onLoginClick} className="login-btn">
-                Iniciar Sesión
+                {t('header.auth.login')}
               </button>
             )}
 
