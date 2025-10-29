@@ -316,7 +316,7 @@ export default function Header({ onLoginClick, onLogout, isAuthenticated }) {
                       <button
                         className="dropdown-user-item"
                         onClick={() => {
-                          navigate('/admin/dashboard');
+                          navigate('/admin');
                           setShowUserMenu(false);
                         }}
                       >
@@ -330,7 +330,7 @@ export default function Header({ onLoginClick, onLogout, isAuthenticated }) {
                         setShowUserMenu(false);
                       }}
                     >
-                      🏠 Mi Panel
+                      🏠 Espacio Personal
                     </button>
                     <button
                       className="dropdown-user-item"

@@ -1,24 +1,74 @@
 //===============================================
-//🏠 DASHBOARD PRINCIPAL - src/components/Dashboard.jsx
+//👤 DASHBOARD USUARIO - CON DATOS REALES
 //===============================================
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
+import { collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
+import { db } from '../config/firebase';
+import './Dashboard.css';
 
 export default function Dashboard() {
-  // Usar namespace 'auth' para dashboard
   const { t } = useTranslation('auth');
-  const { t: tCommon } = useTranslation('common');
   const { user } = useAuth();
-  
   const [activeSection, setActiveSection] = useState('overview');
+  const [userStats, setUserStats] = useState({
+    savedProperties: 0,
+    recentSearches: 0,
+    appointments: 0,
+    messages: 0
+  });
+  const [favorites, setFavorites] = useState([]);
+  const [recentActivity, setRecentActivity] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Datos de ejemplo para el dashboard
-  const userStats = {
-    savedProperties: 12,
-    recentSearches: 8,
-    appointments: 3,
-    messages: 5
+  useEffect(() => {
+    loadUserData();
+  }, [user]);
+
+  const loadUserData = async () => {
+    if (!user) return;
+
+    try {
+      setLoading(true);
+
+      // Cargar favoritos
+      const favoritesQuery = query(
+        collection(db, 'favorites'),
+        where('userId', '==', user.uid)
+      );
+      const favoritesSnap = await getDocs(favoritesQuery);
+      const favoritesData = favoritesSnap.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setFavorites(favoritesData);
+
+      // Cargar actividad reciente
+      const activityQuery = query(
+        collection(db, 'userActivity'),
+        where('userId', '==', user.uid),
+        limit(10)
+      );
+            const activitySnap = await getDocs(activityQuery);
+      const activityData = activitySnap.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setRecentActivity(activityData);
+
+      // Actualizar estadísticas
+      setUserStats({
+        savedProperties: favoritesData.length,
+        recentSearches: activityData.filter(a => a.type === 'search').length,
+        appointments: 0, // Implementar si tienes citas
+        messages: 0 // Implementar si tienes mensajes
+      });
+    } catch (error) {
+      console.error('Error cargando datos del usuario:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const renderContent = () => {
@@ -26,162 +76,119 @@ export default function Dashboard() {
       case 'overview':
         return (
           <div className="dashboard-overview">
-            <h2>{t('dashboard.menu.overview')}</h2>
+            <h2>📊 Resumen</h2>
             
-            {/* Estadísticas del usuario */}
-            <div className="stats-grid">
-              <div className="stat-card">
-                <div className="stat-number">{userStats.savedProperties}</div>
-                <div className="stat-label">{t('dashboard.stats.saved_properties')}</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">{userStats.recentSearches}</div>
-                <div className="stat-label">{t('dashboard.stats.recent_searches')}</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">{userStats.appointments}</div>
-                <div className="stat-label">{t('dashboard.stats.appointments')}</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">{userStats.messages}</div>
-                <div className="stat-label">{t('dashboard.stats.messages')}</div>
-              </div>
-            </div>
+            {loading ? (
+              <div className="loading-spinner">Cargando...</div>
+            ) : (
+              <>
+                <div className="stats-cards">
+                  <div className="stat-card">
+                    <div className="stat-icon">❤️</div>
+                    <div className="stat-content">
+                      <h3>{userStats.savedProperties}</h3>
+                      <p>Propiedades Guardadas</p>
+                    </div>
+                  </div>
 
-            {/* Actividad reciente */}
-            <div className="recent-activity">
-              <h3>Actividad Reciente</h3>
-              <div className="activity-list">
-                <div className="activity-item">
-                  <span className="activity-icon">👁️</span>
-                  <span>Vista villa en Santander - hace 2 horas</span>
+                  <div className="stat-card">
+                    <div className="stat-icon">🔍</div>
+                    <div className="stat-content">
+                      <h3>{userStats.recentSearches}</h3>
+                      <p>Búsquedas Recientes</p>
+                    </div>
+                  </div>
+
+                  <div className="stat-card">
+                    <div className="stat-icon">📅</div>
+                    <div className="stat-content">
+                      <h3>{userStats.appointments}</h3>
+                      <p>Citas Programadas</p>
+                    </div>
+                  </div>
+
+                  <div className="stat-card">
+                    <div className="stat-icon">💬</div>
+                    <div className="stat-content">
+                      <h3>{userStats.messages}</h3>
+                      <p>Mensajes</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="activity-item">
-                  <span className="activity-icon">❤️</span>
-                  <span>Guardado apartamento centro - ayer</span>
+
+                <div className="dashboard-section">
+                  <h3>🏠 Propiedades Guardadas</h3>
+                  {favorites.length > 0 ? (
+                    <div className="favorites-grid">
+                      {favorites.map(fav => (
+                        <div key={fav.id} className="favorite-card">
+                          <h4>{fav.propertyTitle || 'Propiedad'}</h4>
+                          <p>{fav.propertyLocation}</p>
+                          <span className="price">{fav.propertyPrice}€</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="empty-message">No tienes propiedades guardadas</p>
+                  )}
                 </div>
-                <div className="activity-item">
-                  <span className="activity-icon">📅</span>
-                  <span>Cita programada para mañana - hace 3 días</span>
+
+                <div className="dashboard-section">
+                  <h3>📌 Actividad Reciente</h3>
+                  {recentActivity.length > 0 ? (
+                    <ul className="activity-list">
+                      {recentActivity.map(activity => (
+                        <li key={activity.id}>
+                          <span className="activity-date">
+                            {activity.timestamp?.toDate().toLocaleDateString()}
+                          </span>
+                          <span className="activity-text">{activity.description}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="empty-message">No hay actividad reciente</p>
+                  )}
                 </div>
-              </div>
-            </div>
+              </>
+            )}
           </div>
         );
 
       case 'favorites':
         return (
           <div className="dashboard-favorites">
-            <h2>{t('dashboard.menu.favorites')}</h2>
-            <div className="favorites-grid">
-              <div className="property-card-mini">
-                <div className="property-image-mini"></div>
-                <div className="property-info-mini">
-                  <h4>Villa de Lujo Frente al Mar</h4>
-                  <p>Santander - 2.850.000€</p>
-                  <button className="view-button">{tCommon('buttons.view_details')}</button>
-                </div>
+            <h2>❤️ Mis Favoritos</h2>
+            {favorites.length > 0 ? (
+              <div className="favorites-grid-full">
+                {favorites.map(fav => (
+                  <div key={fav.id} className="favorite-card-large">
+                    <h3>{fav.propertyTitle}</h3>
+                    <p className="location">📍 {fav.propertyLocation}</p>
+                    <p className="price">💰 {fav.propertyPrice}€</p>
+                    <button className="btn-view">Ver Detalles</button>
+                  </div>
+                ))}
               </div>
-              {/* Más propiedades favoritas */}
-            </div>
+            ) : (
+              <p className="empty-message">No tienes favoritos guardados</p>
+            )}
           </div>
         );
 
       case 'searches':
         return (
           <div className="dashboard-searches">
-            <h2>{t('dashboard.menu.searches')}</h2>
-            <div className="saved-searches">
-              <div className="search-item">
-                <h4>Villas en Santander</h4>
-                <p>Precio: 500.000€ - 3.000.000€ | 4+ hab.</p>
-                <button className="search-button">Ejecutar búsqueda</button>
-              </div>
-              <div className="search-item">
-                <h4>Apartamentos centro</h4>
-                <p>Precio: 200.000€ - 600.000€ | 2+ hab.</p>
-                <button className="search-button">Ejecutar búsqueda</button>
-              </div>
-            </div>
+            <h2>🔍 Mis Búsquedas</h2>
+            <p>Función en desarrollo...</p>
           </div>
         );
 
       case 'appointments':
         return (
           <div className="dashboard-appointments">
-            <h2>{t('dashboard.menu.appointments')}</h2>
-            <div className="appointments-list">
-              <div className="appointment-item">
-                <div className="appointment-date">
-                  <span className="date">15</span>
-                  <span className="month">ENE</span>
-                </div>
-                <div className="appointment-info">
-                  <h4>Visita Villa Santander</h4>
-                  <p>10:00 - María González</p>
-                  <p>📍 El Sardinero, Santander</p>
-                </div>
-                <div className="appointment-actions">
-                  <button className="btn-secondary">Reagendar</button>
-                  <button className="btn-danger">Cancelar</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'profile':
-        return (
-          <div className="dashboard-profile">
-            <h2>{t('profile.title')}</h2>
-            <div className="profile-sections">
-              <div className="profile-section">
-                <h3>{t('profile.personal_info')}</h3>
-                <div className="form-group">
-                  <label>Nombre:</label>
-                  <input type="text" value={user?.displayName || ''} readOnly />
-                </div>
-                <div className="form-group">
-                  <label>Email:</label>
-                  <input type="email" value={user?.email || ''} readOnly />
-                </div>
-              </div>
-              
-              <div className="profile-section">
-                <h3>{t('profile.preferences')}</h3>
-                <div className="preferences-list">
-                  <div className="preference-item">
-                    <span>Notificaciones por email</span>
-                    <input type="checkbox" defaultChecked />
-                  </div>
-                  <div className="preference-item">
-                    <span>Alertas de nuevas propiedades</span>
-                    <input type="checkbox" defaultChecked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'settings':
-        return (
-          <div className="dashboard-settings">
-            <h2>{t('dashboard.menu.settings')}</h2>
-            <div className="settings-sections">
-              <div className="settings-section">
-                <h3>{t('profile.account_settings')}</h3>
-                <button className="settings-button">
-                  {t('profile.password_change')}
-                </button>
-                <button className="settings-button">
-                  Configurar notificaciones
-                </button>
-                <button className="settings-button">
-                  Exportar datos
-                </button>
-              </div>
-            </div>
+            <h2>📅 Mis Citas</h2>
+            <p>Función en desarrollo...</p>
           </div>
         );
 
@@ -191,75 +198,41 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="dashboard">
-      <div className="dashboard-container">
-        {/* Bienvenida */}
-        <div className="dashboard-header">
-          <h1>
-            {t('dashboard.welcome')}, {user?.displayName || user?.email}
-          </h1>
-          <p>Gestiona tu experiencia premium en Novaterra Lifestyle</p>
-        </div>
+    <div className="user-dashboard">
+      <div className="dashboard-header">
+        <h1>Espacio Personal</h1>
+        <p>Bienvenido, {user?.email}</p>
+      </div>
 
-        <div className="dashboard-layout">
-          {/* Sidebar de navegación */}
-          <aside className="dashboard-sidebar">
-            <nav className="dashboard-nav">
-              <button
-                className={`nav-item ${activeSection === 'overview' ? 'active' : ''}`}
-                onClick={() => setActiveSection('overview')}
-              >
-                <span className="nav-icon">📊</span>
-                {t('dashboard.menu.overview')}
-              </button>
-              
-              <button
-                className={`nav-item ${activeSection === 'favorites' ? 'active' : ''}`}
-                onClick={() => setActiveSection('favorites')}
-              >
-                <span className="nav-icon">❤️</span>
-                {t('dashboard.menu.favorites')}
-              </button>
-              
-              <button
-                className={`nav-item ${activeSection === 'searches' ? 'active' : ''}`}
-                onClick={() => setActiveSection('searches')}
-              >
-                <span className="nav-icon">🔍</span>
-                {t('dashboard.menu.searches')}
-              </button>
-              
-              <button
-                className={`nav-item ${activeSection === 'appointments' ? 'active' : ''}`}
-                onClick={() => setActiveSection('appointments')}
-              >
-                <span className="nav-icon">📅</span>
-                {t('dashboard.menu.appointments')}
-              </button>
-              
-              <button
-                className={`nav-item ${activeSection === 'profile' ? 'active' : ''}`}
-                onClick={() => setActiveSection('profile')}
-              >
-                <span className="nav-icon">👤</span>
-                {t('dashboard.menu.profile')}
-              </button>
-              
-              <button
-                className={`nav-item ${activeSection === 'settings' ? 'active' : ''}`}
-                onClick={() => setActiveSection('settings')}
-              >
-                <span className="nav-icon">⚙️</span>
-                {t('dashboard.menu.settings')}
-              </button>
-            </nav>
-          </aside>
+      <div className="dashboard-tabs">
+        <button
+          className={activeSection === 'overview' ? 'active' : ''}
+          onClick={() => setActiveSection('overview')}
+        >
+          📊 Resumen
+        </button>
+        <button
+          className={activeSection === 'favorites' ? 'active' : ''}
+          onClick={() => setActiveSection('favorites')}
+        >
+          ❤️ Favoritos
+        </button>
+        <button
+          className={activeSection === 'searches' ? 'active' : ''}
+          onClick={() => setActiveSection('searches')}
+        >
+          🔍 Búsquedas
+        </button>
+        <button
+          className={activeSection === 'appointments' ? 'active' : ''}
+          onClick={() => setActiveSection('appointments')}
+        >
+          📅 Citas
+        </button>
+      </div>
 
-          {/* Contenido principal */}
-          <main className="dashboard-content">
-            {renderContent()}
-          </main>
-        </div>
+      <div className="dashboard-content">
+        {renderContent()}
       </div>
     </div>
   );

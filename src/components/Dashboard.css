@@ -1,0 +1,347 @@
+/*===============================================*/
+/*👤 USER DASHBOARD - ESTILOS PREMIUM */
+/*===============================================*/
+
+.user-dashboard {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  padding: 2rem;
+  color: #ffffff;
+}
+
+.dashboard-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 2px solid #d4af37;
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  font-size: 2.5rem;
+  color: #d4af37;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  font-family: 'Playfair Display', serif; /* ✅ Más elegante */
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.user-subtitle {
+  color: #999;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.dashboard-header p {
+  color: #999;
+  font-size: 1.1rem;
+}
+
+/* TABS NAVEGACIÓN */
+.dashboard-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.dashboard-tabs button {
+  background: rgba(212, 175, 55, 0.1);
+  border: 2px solid #d4af37;
+  color: #d4af37;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dashboard-tabs button:hover {
+  background: #d4af37;
+  color: #1a1a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+}
+
+.dashboard-tabs button.active {
+  background: #d4af37;
+  color: #1a1a1a;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.6);
+}
+
+/* CONTENIDO */
+.dashboard-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* OVERVIEW */
+.dashboard-overview h2 {
+  color: #d4af37;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  border: 2px solid #d4af37;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+  border-color: #f4d03f;
+}
+
+.stat-icon {
+  font-size: 3rem;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212, 175, 55, 0.2);
+  border-radius: 50%;
+}
+
+.stat-content h3 {
+  font-size: 2.5rem;
+  color: #d4af37;
+  margin: 0;
+}
+
+.stat-content p {
+  color: #999;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* SECCIONES DEL DASHBOARD */
+.dashboard-section {
+  background: #2a2a2a;
+  border: 1px solid #d4af37;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.dashboard-section h3 {
+  color: #d4af37;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* FAVORITOS GRID */
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.favorite-card {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.favorite-card:hover {
+  border-color: #d4af37;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+}
+
+.favorite-card h4 {
+  color: #d4af37;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.favorite-card p {
+  color: #999;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.favorite-card .price {
+  color: #f4d03f;
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+/* FAVORITOS FULL (PÁGINA COMPLETA) */
+.dashboard-favorites,
+.dashboard-searches,
+.dashboard-appointments {
+  padding: 2rem;
+}
+
+.dashboard-favorites h2,
+.dashboard-searches h2,
+.dashboard-appointments h2 {
+  color: #d4af37;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.favorites-grid-full {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.favorite-card-large {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  border: 2px solid #d4af37;
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.favorite-card-large:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+}
+
+.favorite-card-large h3 {
+  color: #d4af37;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.favorite-card-large .location {
+  color: #999;
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.favorite-card-large .price {
+  color: #f4d03f;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.btn-view {
+  background: #d4af37;
+  color: #1a1a1a;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.btn-view:hover {
+  background: #f4d03f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+}
+
+/* ACTIVIDAD RECIENTE */
+.activity-list {
+  list-style: none;
+  padding: 0;
+}
+
+.activity-list li {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.activity-list li:last-child {
+  border-bottom: none;
+}
+
+.activity-date {
+  color: #999;
+  font-size: 0.85rem;
+  min-width: 100px;
+}
+
+.activity-text {
+  color: #fff;
+  flex: 1;
+}
+
+/* EMPTY STATE */
+.empty-message {
+  text-align: center;
+  color: #999;
+  padding: 3rem;
+  font-size: 1.1rem;
+}
+
+/* LOADING */
+.loading-spinner {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.5rem;
+  color: #d4af37;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .user-dashboard {
+    padding: 1rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 2rem;
+  }
+
+  .dashboard-tabs {
+    flex-direction: column;
+  }
+
+  .dashboard-tabs button {
+    width: 100%;
+  }
+
+  .stats-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .favorites-grid,
+  .favorites-grid-full {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-content h3 {
+    font-size: 2rem;
+  }
+}

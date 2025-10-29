@@ -1325,7 +1325,7 @@ body {
   padding: 0.9rem 1.2rem;
   background: transparent;
   border: none;
-  color: #ffffff;
+  color: #d4af37;
   text-align: left;
   cursor: pointer;
   display: flex;
@@ -1333,12 +1333,15 @@ body {
   gap: 0.8rem;
   transition: all 0.2s ease;
   font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .dropdown-user-item:hover {
   background: rgba(212, 175, 55, 0.2);
   padding-left: 1.5rem;
+  color: #f4d03f;
 }
+
 
 .dropdown-divider {
   height: 1px;
