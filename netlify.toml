@@ -6,6 +6,14 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+# ⚙️ Configuración para Netlify Dev (desarrollo local)
+[dev]
+  command = "npm run dev"
+  port = 8888
+  targetPort = 3000
+  publish = "dist"
+  autoLaunch = true
+
 # Redirección necesaria para React Router
 [[redirects]]
   from = "/*"

@@ -1,74 +1,132 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+//===============================================
+//🏠 HOME - src/pages/Home.jsx
+//===============================================
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { AutoTranslate } from '../components/AutoTranslate';
+import AutoTranslate from '../components/AutoTranslate';
 
 export default function Home() {
   const { t } = useTranslation('common');
+  const navigate = useNavigate();
+
+  //===============================================
+  // ✅ SCROLL AL MAIN-CONTENT (NO AL HEADER)
+  //===============================================
+  useEffect(() => {
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+      mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
+
+  //===============================================
+  // ✅ NAVEGACIÓN CON SCROLL AL MAIN-CONTENT
+  //===============================================
+  const handleNavigate = (path) => {
+    navigate(path);
+    // Delay para que cargue la página antes de hacer scroll
+    setTimeout(() => {
+      const mainContent = document.querySelector('.main-content');
+      if (mainContent) {
+        mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
 
   return (
     <div className="home-container">
       <section className="hero-section">
-        <div className="hero-content">
-          <h2 className="hero-title">
-            <AutoTranslate>Cantabria, tu mejor inversión y destino en España</AutoTranslate>
-          </h2>
+        <div className="hero-content-wide">
+          <h1 className="hero-title">
+            <AutoTranslate>Bienvenido a Novaterra Lifestyle</AutoTranslate>
+          </h1>
           
-          <p className="hero-subtitle">
+          <p className="hero-text">
             <AutoTranslate>
-              Descubre Cantabria, una tierra única en el norte de España que combina naturaleza, mar, montaña y una calidad de vida incomparable.
+              Descubre la esencia del lujo en Cantabria, donde cada propiedad cuenta una historia única de elegancia y sofisticación. En Novaterra Lifestyle, transformamos sueños en realidad mediante propiedades exclusivas que definen el más alto estándar de vida.
             </AutoTranslate>
           </p>
-          
-          <p className="hero-description">
-            <strong>
-              <AutoTranslate>
-                Ofrecemos inmuebles exclusivos, alojamientos singulares, viajes a medida y experiencias auténticas para que vivas o disfrutes esta región de una manera diferente.
-              </AutoTranslate>
-            </strong>
-          </p>
-          
-          <p className="hero-goal">
+
+          <p className="hero-text">
             <AutoTranslate>
-              Nuestro objetivo es acercar lo mejor de Cantabria a Europa, especialmente a quienes buscan en España un lugar con encanto, seguridad y oportunidades reales de inversión.
+              Nuestro compromiso va más allá de la venta inmobiliaria: ofrecemos una experiencia integral que combina asesoramiento personalizado, servicios premium y acceso a experiencias únicas en uno de los destinos más privilegiados de España.
             </AutoTranslate>
           </p>
-          
-          <p className="hero-closing">
+
+          <p className="hero-text">
             <AutoTranslate>
-              Ya sea que quieras comprar una casa, planear unas vacaciones inolvidables o explorar excursiones llenas de cultura, gastronomía y paisajes, en Cantabria lo encontrarás todo.
+              Desde villas con vistas panorámicas al mar Cantábrico hasta propiedades señoriales en el corazón de los Picos de Europa, cada inmueble ha sido cuidadosamente seleccionado para satisfacer las expectativas más exigentes.
             </AutoTranslate>
           </p>
-          
-          <h3 className="hero-cta">
-            <strong>
-              <AutoTranslate>Invierte, viaja y vive Cantabria</AutoTranslate>
-            </strong>
-          </h3>
+
+          <p className="hero-cta-text">
+            <AutoTranslate>Tu nuevo hogar de lujo te espera en Cantabria</AutoTranslate>
+          </p>
         </div>
       </section>
 
       <section className="features-section">
+        <h2 className="section-title-home">
+          <AutoTranslate>¿Por qué elegir Novaterra Lifestyle?</AutoTranslate>
+        </h2>
+
         <div className="features-grid">
-          <div className="feature-card">
-            <h3><AutoTranslate>Propiedades Exclusivas</AutoTranslate></h3>
-            <p><AutoTranslate>Villas, apartamentos y casas rurales en las mejores ubicaciones de Cantabria</AutoTranslate></p>
+          {/* ✅ TARJETAS CON SCROLL AL MAIN-CONTENT */}
+          <div 
+            className="feature-card clickable"
+            onClick={() => handleNavigate('/properties')}
+          >
+            <div className="feature-icon">🏡</div>
+            <h3 className="feature-title">
+              <AutoTranslate>Propiedades Exclusivas</AutoTranslate>
+            </h3>
+            <p className="feature-description">
+              <AutoTranslate>
+                Accede a un portfolio selecto de villas, chalets y apartamentos de lujo en las ubicaciones más privilegiadas de Cantabria. Cada propiedad cumple con los más altos estándares de calidad, diseño y confort.
+              </AutoTranslate>
+            </p>
+            <span className="feature-link">
+              <AutoTranslate>Ver propiedades →</AutoTranslate>
+            </span>
           </div>
-          <div className="feature-card">
-            <h3><AutoTranslate>Experiencias Únicas</AutoTranslate></h3>
-            <p><AutoTranslate>Descubre Cantabria como un local con nuestras experiencias personalizadas</AutoTranslate></p>
+
+          <div 
+            className="feature-card clickable"
+            onClick={() => handleNavigate('/services')}
+          >
+            <div className="feature-icon">⭐</div>
+            <h3 className="feature-title">
+              <AutoTranslate>Servicios Premium</AutoTranslate>
+            </h3>
+            <p className="feature-description">
+              <AutoTranslate>
+                Disfruta de asesoramiento jurídico especializado, gestión integral de tu propiedad, reformas personalizadas y servicios de conserjería disponibles las 24 horas para garantizar tu máxima tranquilidad.
+              </AutoTranslate>
+            </p>
+            <span className="feature-link">
+              <AutoTranslate>Descubrir servicios →</AutoTranslate>
+            </span>
           </div>
-          <div className="feature-card">
-            <h3><AutoTranslate>Servicios Premium</AutoTranslate></h3>
-            <p><AutoTranslate>Concierge, chef privado, transporte de lujo y spa para una estancia perfecta</AutoTranslate></p>
+
+          <div 
+            className="feature-card clickable"
+            onClick={() => handleNavigate('/experiences')}
+          >
+            <div className="feature-icon">🌟</div>
+            <h3 className="feature-title">
+              <AutoTranslate>Experiencias Únicas</AutoTranslate>
+            </h3>
+            <p className="feature-description">
+              <AutoTranslate>
+                Vive Cantabria al máximo con experiencias gastronómicas en restaurantes con estrella Michelin, rutas exclusivas por los Picos de Europa y actividades personalizadas que harán de tu estancia algo inolvidable.
+              </AutoTranslate>
+            </p>
+            <span className="feature-link">
+              <AutoTranslate>Explorar experiencias →</AutoTranslate>
+            </span>
           </div>
         </div>
-      </section>
-
-      <section className="cta-section">
-        <Link to="/properties" className="cta-button">
-          {t('buttons.see_more')}
-        </Link>
       </section>
     </div>
   );

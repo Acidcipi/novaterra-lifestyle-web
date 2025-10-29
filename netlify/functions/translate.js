@@ -1,14 +1,25 @@
-// netlify/functions/translate.js
-import fetch from 'node-fetch';
+//===============================================
+//🌍 FUNCIÓN NETLIFY DE TRADUCCIÓN - netlify/functions/translate.js
+//===============================================
 
-export async function handler(event) {
+// Usar LibreTranslate público como servicio principal
+// Fallback a MyMemory si falla
+const LIBRETRANSLATE_API = 'https://libretranslate.com/translate';
+const MYMEMORY_API = 'https://api.mymemory.translated.net/get';
+
+exports.handler = async (event, context) => {
+  // Solo permitir POST
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ error: 'Method not allowed' })
+    };
   }
 
   try {
     const { text, target, source = 'es' } = JSON.parse(event.body);
-    
+
+    // Validación de entrada
     if (!text || !target) {
       return {
         statusCode: 400,
@@ -16,44 +27,69 @@ export async function handler(event) {
       };
     }
 
-    // Array de textos para traducir
-    const textsToTranslate = Array.isArray(text) ? text : [text];
-    
-    // Usar LibreTranslate (API gratuita) o Google Translate API
-    const translations = await Promise.all(
-      textsToTranslate.map(async (t) => {
-        // Opción 1: LibreTranslate (GRATIS - recomendado para empezar)
-        const response = await fetch('https://libretranslate.de/translate', {
+    // Convertir texto a array si es string
+    const textsArray = Array.isArray(text) ? text : [text];
+    const translations = [];
+
+    // Traducir cada texto
+    for (const singleText of textsArray) {
+      try {
+        // Intentar con LibreTranslate primero
+        const libreResponse = await fetch(LIBRETRANSLATE_API, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            q: t,
+            q: singleText,
             source: source,
             target: target,
             format: 'text'
           })
         });
 
-        if (!response.ok) {
-          throw new Error(`Translation API error: ${response.statusText}`);
+        if (libreResponse.ok) {
+          const data = await libreResponse.json();
+          translations.push(data.translatedText);
+          continue;
         }
+      } catch (libreError) {
+        console.warn('LibreTranslate falló, usando MyMemory:', libreError);
+      }
 
-        const data = await response.json();
-        return data.translatedText;
-      })
-    );
+      // Fallback a MyMemory
+      try {
+        const myMemoryUrl = `${MYMEMORY_API}?q=${encodeURIComponent(singleText)}&langpair=${source}|${target}`;
+        const myMemoryResponse = await fetch(myMemoryUrl);
+        
+        if (myMemoryResponse.ok) {
+          const data = await myMemoryResponse.json();
+          translations.push(data.responseData.translatedText);
+        } else {
+          // Si todo falla, devolver texto original
+          translations.push(singleText);
+        }
+      } catch (myMemoryError) {
+        console.error('MyMemory también falló:', myMemoryError);
+        translations.push(singleText);
+      }
+    }
 
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
       body: JSON.stringify({ translations })
     };
 
   } catch (error) {
-    console.error('Translation error:', error);
+    console.error('Error en traducción:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: error.message })
+      body: JSON.stringify({ 
+        error: 'Translation failed',
+        message: error.message 
+      })
     };
   }
-}
+};

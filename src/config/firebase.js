@@ -218,3 +218,39 @@ export const getUserToken = async () => {
   }
   return null;
 };
+
+//===============================================
+//👤 CREAR USUARIO CON ROL EN FIRESTORE
+//===============================================
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+
+/**
+ * Registra un usuario y crea su documento en Firestore con rol
+ */
+export async function registerUserWithRole(email, password, displayName = null) {
+  try {
+    // Crear usuario en Authentication
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // Actualizar displayName si se proporciona
+    if (displayName) {
+      await updateProfile(user, { displayName });
+    }
+
+    // Crear documento en Firestore con rol por defecto 'user'
+    await setDoc(doc(db, 'users', user.uid), {
+      uid: user.uid,
+      email: user.email,
+      displayName: displayName || user.email.split('@')[0],
+      role: 'user', // Rol por defecto
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+
+    return user;
+  } catch (error) {
+    console.error('Error en registro:', error);
+    throw error;
+  }
+}
