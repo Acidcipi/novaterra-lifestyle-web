@@ -279,11 +279,11 @@ export default function Header({ onLoginClick, onLogout, isAuthenticated }) {
               </span>
               {showExperiencesMenu && (
                 <div className="dropdown-menu">
-                  <Link to="/experiences" className="dropdown-item" onClick={() => setShowExperiencesMenu(false)}>
-                    {t('Basicas')}
+                  <Link to="/experiences?type=basic" className="dropdown-item" onClick={() => setShowExperiencesMenu(false)}>
+                    ✨ Experiencias Básicas
                   </Link>
-                  <Link to="/premium-services" className="dropdown-item" onClick={() => setShowExperiencesMenu(false)}>
-                    {t('VIP')}
+                  <Link to="/experiences?type=vip" className="dropdown-item" onClick={() => setShowExperiencesMenu(false)}>
+                    💎 Experiencias VIP
                   </Link>
                 </div>
               )}
@@ -353,7 +353,7 @@ export default function Header({ onLoginClick, onLogout, isAuthenticated }) {
               </div>
             ) : (
               <button onClick={onLoginClick} className="login-btn">
-                {t('header.auth.login')}
+                Iniciar Sesión
               </button>
             )}
 
