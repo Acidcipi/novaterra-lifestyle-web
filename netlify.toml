@@ -1,5 +1,7 @@
 [build]
   command = "npm run build"
+  publish = ".next"
+  environment = { NODE_VERSION = "20" }  # recomendado para Next.js 16
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
